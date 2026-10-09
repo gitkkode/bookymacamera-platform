@@ -1,0 +1,134 @@
+<div class="page">
+  @if (loading()) {
+    <div class="shell state-wrap">
+      <div class="state-panel" role="status">
+        <p class="state-panel__title">Loading camera…</p>
+        <p class="state-panel__text">Fetching product details.</p>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="shell state-wrap">
+      <div class="state-panel state-panel--error" role="alert">
+        <p class="state-panel__title">Something went wrong</p>
+        <p class="state-panel__text">{{ error() }}</p>
+        <button type="button" class="btn btn--primary" (click)="retry()">Retry</button>
+      </div>
+    </div>
+  } @else if (notFound() || !camera()) {
+    <div class="shell state-wrap">
+      <div class="state-panel" role="status">
+        <p class="eyebrow">404</p>
+        <p class="state-panel__title">Camera not found</p>
+        <p class="state-panel__text">
+          That body is not in our catalogue. Browse available cameras or let us choose for you.
+        </p>
+        <div class="state-panel__actions">
+          <a routerLink="/cameras" class="btn btn--primary">Back to cameras</a>
+          <a routerLink="/book" class="btn btn--ghost">Let us choose</a>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @let cam = camera()!;
+    <div class="shell detail-wrap">
+      <a routerLink="/cameras" class="back-link">← All cameras</a>
+
+      <div class="detail">
+        <div class="detail__main">
+          <div class="product-media">
+            <img
+              [src]="cam.image"
+              [alt]="cam.model"
+              width="960"
+              height="720"
+              fetchpriority="high"
+            />
+          </div>
+
+          <header class="product-head">
+            <p class="eyebrow">{{ cam.brand }}</p>
+            <h1 class="product-title">{{ cam.model }}</h1>
+            <p class="product-meta">
+              {{ cam.category }} · {{ cam.rating.toFixed(1) }} ★ ({{ cam.reviews }} reviews)
+            </p>
+            <p class="lede">{{ cam.description }}</p>
+          </header>
+
+          <div class="specs">
+            <h2 class="block__title">Specifications</h2>
+            <dl class="specs__list">
+              <div class="specs__row">
+                <dt>Brand</dt>
+                <dd>{{ cam.brand }}</dd>
+              </div>
+              <div class="specs__row">
+                <dt>Model</dt>
+                <dd>{{ cam.model }}</dd>
+              </div>
+              @for (spec of cam.specifications; track spec.label) {
+                <div class="specs__row">
+                  <dt>{{ spec.label }}</dt>
+                  <dd>{{ spec.value }}</dd>
+                </div>
+              }
+            </dl>
+          </div>
+
+          @if (cam.features.length) {
+            <div class="block">
+              <h2 class="block__title">Features</h2>
+              <ul class="tag-list">
+                @for (feature of cam.features; track feature) {
+                  <li class="tag">{{ feature }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+
+        <aside class="detail__aside">
+          <div class="book-card">
+            <p class="book-card__brand">{{ cam.brand }}</p>
+            <p class="book-card__model">{{ cam.model }}</p>
+            <p class="book-card__price">
+              <span class="book-card__price-now">₹{{ cam.price }}</span>
+              @if (cam.originalPrice > cam.price) {
+                <span class="book-card__price-was">₹{{ cam.originalPrice }}</span>
+                <span class="book-card__price-off">{{ cam.discount }}% off</span>
+              }
+            </p>
+            <p class="book-card__meta">{{ cam.shortDescription }}</p>
+            <ul class="book-card__points">
+              <li>Photographer arrives with the kit</li>
+              <li>No charge until confirmed</li>
+              <li>Dispatch subject to availability</li>
+            </ul>
+            <a
+              class="btn btn--primary btn--block"
+              [routerLink]="['/book']"
+              [queryParams]="{ camera: cam.slug }"
+            >
+              Book with {{ cam.model }}
+            </a>
+            <a routerLink="/book" class="btn btn--ghost btn--block">Let us choose</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Mobile sticky Book CTA -->
+    <div class="mobile-cta">
+      <div class="mobile-cta__info">
+        <p class="mobile-cta__model">{{ cam.model }}</p>
+        <p class="mobile-cta__brand">{{ cam.brand }}</p>
+      </div>
+      <a
+        class="btn btn--primary"
+        [routerLink]="['/book']"
+        [queryParams]="{ camera: cam.slug }"
+      >
+        Book
+      </a>
+    </div>
+  }
+</div>

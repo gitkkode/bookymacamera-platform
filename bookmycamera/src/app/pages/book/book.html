@@ -1,0 +1,487 @@
+<section class="book" aria-labelledby="book-heading">
+  <div class="book__shell">
+    @if (submitResult()?.success) {
+      <div class="book-success" role="status" aria-live="polite">
+        <div class="book-success__badge" aria-hidden="true">✓</div>
+        <p class="book-eyebrow">Booking confirmed</p>
+        <h1 id="book-heading" class="book-title">Request received</h1>
+        <p class="book-lede">
+          {{ submitResult()!.message }}
+        </p>
+
+        <div class="book-success__ref">
+          <p class="book-success__ref-label">Reference ID</p>
+          <p class="book-success__ref-id">{{ submitResult()!.referenceId }}</p>
+          <p class="book-success__ref-hint">Save this ID — quote it if you contact support.</p>
+        </div>
+
+        <p class="book-trust">
+          No charge until confirmed · Dispatch subject to availability
+        </p>
+
+        <div class="book-success__actions">
+          <button
+            type="button"
+            class="bmc-btn bmc-btn--primary bmc-btn--lg"
+            (click)="startNewBooking()"
+          >
+            Book another shoot
+          </button>
+          <a routerLink="/" class="bmc-btn bmc-btn--secondary">Back to home</a>
+        </div>
+      </div>
+    } @else {
+      <!-- Progress stepper -->
+      <nav class="book-steps" aria-label="Booking progress">
+        <ol class="book-steps__list">
+          @for (step of steps; track step.index) {
+            <li
+              class="book-steps__item"
+              [class.is-current]="isStepCurrent(step.index)"
+              [class.is-complete]="isStepComplete(step.index)"
+              [class.is-clickable]="isStepClickable(step.index)"
+            >
+              <button
+                type="button"
+                class="book-steps__btn"
+                [disabled]="!isStepClickable(step.index)"
+                [attr.aria-current]="isStepCurrent(step.index) ? 'step' : null"
+                [attr.aria-label]="
+                  'Step ' + step.index + ' of ' + totalSteps + ': ' + step.label +
+                  (isStepComplete(step.index) ? ', completed' : '') +
+                  (isStepCurrent(step.index) ? ', current' : '')
+                "
+                (click)="goToStep(step.index)"
+              >
+                <span class="book-steps__num" aria-hidden="true">
+                  @if (isStepComplete(step.index)) {
+                    ✓
+                  } @else {
+                    {{ step.index }}
+                  }
+                </span>
+                <span class="book-steps__label">{{ step.label }}</span>
+              </button>
+            </li>
+          }
+        </ol>
+        <p class="book-steps__status sr-only" aria-live="polite">
+          Step {{ currentStep() }} of {{ totalSteps }}: {{ stepTitle() }}
+        </p>
+      </nav>
+
+      <div class="book-layout">
+        <!-- Left sticky summary (desktop) -->
+        <aside class="book-summary" aria-label="Booking summary">
+          <p class="book-summary__eyebrow">Your booking</p>
+          <h2 class="book-summary__title">Summary</h2>
+
+          <dl class="book-summary__list">
+            <div class="book-summary__row" [class.is-filled]="!!state().shootType">
+              <dt>Shoot</dt>
+              <dd>{{ state().shootType || 'Not selected' }}</dd>
+            </div>
+            <div class="book-summary__row" [class.is-filled]="!!locationLabel()">
+              <dt>Location</dt>
+              <dd>{{ locationLabel() || 'Not set' }}</dd>
+            </div>
+            <div class="book-summary__row" [class.is-filled]="whenLabel() !== '—'">
+              <dt>When</dt>
+              <dd>{{ whenLabel() === '—' ? 'Not set' : whenLabel() }}</dd>
+            </div>
+            <div class="book-summary__row" [class.is-filled]="cameraLabel() !== '—'">
+              <dt>Camera</dt>
+              <dd>{{ cameraLabel() === '—' ? 'Not selected' : cameraLabel() }}</dd>
+            </div>
+            <div class="book-summary__row" [class.is-filled]="durationLabel() !== '—'">
+              <dt>Duration</dt>
+              <dd>{{ durationLabel() === '—' ? 'Not selected' : durationLabel() }}</dd>
+            </div>
+          </dl>
+
+          <p class="book-trust book-trust--summary">
+            No charge until confirmed · Dispatch subject to availability
+          </p>
+        </aside>
+
+        <!-- Right: step content -->
+        <div class="book-main">
+          <header class="book-header">
+            <p class="book-eyebrow">Step {{ currentStep() }} of {{ totalSteps }}</p>
+            <h1 id="book-heading" class="book-title">{{ stepTitle() }}</h1>
+            <p class="book-lede">{{ stepHint() }}</p>
+          </header>
+
+          <div class="book-panel" [attr.aria-labelledby]="'book-step-' + currentStep()">
+            <h2 [id]="'book-step-' + currentStep()" class="sr-only">
+              Step {{ currentStep() }}: {{ stepTitle() }}
+            </h2>
+
+            <!-- STEP 1: Shoot type -->
+            @if (currentStep() === 1) {
+              <div class="option-grid option-grid--types" role="radiogroup" aria-label="Shoot type">
+                @for (type of shootTypes; track type.id) {
+                  <button
+                    type="button"
+                    class="option-card"
+                    role="radio"
+                    [attr.aria-checked]="state().shootType === type.label"
+                    [class.is-selected]="state().shootType === type.label"
+                    (click)="selectShootType(type.label)"
+                  >
+                    <span class="option-card__title">{{ type.label }}</span>
+                    <span class="option-card__desc">{{ type.description }}</span>
+                  </button>
+                }
+              </div>
+            }
+
+            <!-- STEP 2: Location -->
+            @if (currentStep() === 2) {
+              <form class="book-form" [formGroup]="locationForm" (ngSubmit)="$event.preventDefault()">
+                <div class="book-field">
+                  <label class="book-label" for="book-city">City</label>
+                  <input
+                    id="book-city"
+                    class="book-input"
+                    type="text"
+                    formControlName="city"
+                    autocomplete="address-level2"
+                    placeholder="e.g. Mumbai"
+                    aria-required="true"
+                  />
+                </div>
+                <div class="book-field">
+                  <label class="book-label" for="book-area">Area</label>
+                  <input
+                    id="book-area"
+                    class="book-input"
+                    type="text"
+                    formControlName="area"
+                    autocomplete="address-level3"
+                    placeholder="e.g. Bandra West"
+                    aria-required="true"
+                  />
+                </div>
+                <div class="book-field">
+                  <label class="book-label" for="book-address">Address</label>
+                  <textarea
+                    id="book-address"
+                    class="book-input book-input--textarea"
+                    formControlName="address"
+                    rows="3"
+                    autocomplete="street-address"
+                    placeholder="Venue or full address for the shoot"
+                    aria-required="true"
+                  ></textarea>
+                </div>
+              </form>
+            }
+
+            <!-- STEP 3: When -->
+            @if (currentStep() === 3) {
+              <div class="when-options" role="radiogroup" aria-label="Timing preference">
+                <button
+                  type="button"
+                  class="option-card option-card--when"
+                  role="radio"
+                  [attr.aria-checked]="state().urgency === 'asap'"
+                  [class.is-selected]="state().urgency === 'asap'"
+                  (click)="selectUrgency('asap')"
+                >
+                  <span class="option-card__badge">Fastest</span>
+                  <span class="option-card__title">ASAP</span>
+                  <span class="option-card__desc">
+                    Dispatch in as little as 90 minutes*
+                  </span>
+                  <span class="option-card__note">
+                    *Subject to photographer and camera availability in your area.
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="option-card option-card--when"
+                  role="radio"
+                  [attr.aria-checked]="state().urgency === 'scheduled'"
+                  [class.is-selected]="state().urgency === 'scheduled'"
+                  (click)="selectUrgency('scheduled')"
+                >
+                  <span class="option-card__title">Schedule</span>
+                  <span class="option-card__desc">
+                    Pick a preferred date and time for your shoot.
+                  </span>
+                </button>
+              </div>
+
+              @if (state().urgency === 'scheduled') {
+                <div class="book-form book-form--inline">
+                  <div class="book-field">
+                    <label class="book-label" for="book-date">Date</label>
+                    <input
+                      id="book-date"
+                      class="book-input"
+                      type="date"
+                      [min]="minDate()"
+                      [value]="state().date"
+                      (change)="onDateChange($any($event.target).value)"
+                      aria-required="true"
+                    />
+                  </div>
+                  <div class="book-field">
+                    <label class="book-label" for="book-time">Time</label>
+                    <input
+                      id="book-time"
+                      class="book-input"
+                      type="time"
+                      [value]="state().time"
+                      (change)="onTimeChange($any($event.target).value)"
+                      aria-required="true"
+                    />
+                  </div>
+                </div>
+              }
+            }
+
+            <!-- STEP 4: Camera -->
+            @if (currentStep() === 4) {
+              <button
+                type="button"
+                class="option-card option-card--choose"
+                role="radio"
+                [attr.aria-checked]="state().cameraChoice === 'let-us-choose'"
+                [class.is-selected]="state().cameraChoice === 'let-us-choose'"
+                (click)="selectLetUsChoose()"
+                aria-label="Not sure? Let our team choose the camera"
+              >
+                <span class="option-card__kicker">Not sure?</span>
+                <span class="option-card__title">Let our team choose</span>
+                <span class="option-card__desc">
+                  We’ll match the right body to your brief, location, and shoot type.
+                </span>
+              </button>
+
+              @if (camerasLoading()) {
+                <p class="book-state" role="status">Loading cameras…</p>
+              } @else if (camerasError()) {
+                <p class="book-state book-state--error" role="alert">{{ camerasError() }}</p>
+              } @else {
+                <div class="camera-grid" role="radiogroup" aria-label="Camera selection">
+                  @for (cam of cameras(); track cam.id) {
+                    <button
+                      type="button"
+                      class="camera-option"
+                      role="radio"
+                      [attr.aria-checked]="
+                        state().cameraChoice === 'specific' && state().cameraId === cam.id
+                      "
+                      [class.is-selected]="
+                        state().cameraChoice === 'specific' && state().cameraId === cam.id
+                      "
+                      (click)="selectCamera(cam)"
+                    >
+                      <span class="camera-option__media">
+                        <img
+                          [src]="cam.image"
+                          [alt]="cam.brand + ' ' + cam.model"
+                          width="320"
+                          height="240"
+                          loading="lazy"
+                        />
+                      </span>
+                      <span class="camera-option__body">
+                        <span class="camera-option__brand">{{ cam.brand }}</span>
+                        <span class="camera-option__model">{{ cam.model }}</span>
+                        <span class="camera-option__meta">{{ cam.category }}</span>
+                      </span>
+                    </button>
+                  }
+                </div>
+              }
+            }
+
+            <!-- STEP 5: Duration -->
+            @if (currentStep() === 5) {
+              <div class="option-grid option-grid--durations" role="radiogroup" aria-label="Shoot duration">
+                @for (dur of durations; track dur.hours) {
+                  <button
+                    type="button"
+                    class="option-card option-card--duration"
+                    role="radio"
+                    [attr.aria-checked]="state().durationHours === dur.hours"
+                    [class.is-selected]="state().durationHours === dur.hours"
+                    (click)="selectDuration(dur.hours)"
+                  >
+                    <span class="option-card__title">{{ dur.label }}</span>
+                    @if (dur.priceLabel) {
+                      <span class="option-card__desc">{{ dur.priceLabel }}</span>
+                    }
+                  </button>
+                }
+              </div>
+            }
+
+            <!-- STEP 6: Brief -->
+            @if (currentStep() === 6) {
+              <div class="book-form">
+                <div class="book-field">
+                  <label class="book-label" for="book-brief">
+                    Tell us about your shoot
+                    <span class="book-label__hint">Required — a few sentences go a long way</span>
+                  </label>
+                  <textarea
+                    id="book-brief"
+                    class="book-input book-input--textarea book-input--brief"
+                    rows="6"
+                    [value]="state().brief"
+                    (input)="onBriefChange($any($event.target).value)"
+                    placeholder="Mood, must-have shots, brand references, lighting notes, deliverables…"
+                    aria-required="true"
+                  ></textarea>
+                </div>
+              </div>
+            }
+
+            <!-- STEP 7: Review -->
+            @if (currentStep() === 7) {
+              <div class="book-review">
+                <dl class="review-list">
+                  <div class="review-row">
+                    <dt>Shoot type</dt>
+                    <dd>{{ state().shootType || '—' }}</dd>
+                  </div>
+                  <div class="review-row">
+                    <dt>Location</dt>
+                    <dd>
+                      {{ state().address }}, {{ state().area }}, {{ state().city }}
+                    </dd>
+                  </div>
+                  <div class="review-row">
+                    <dt>When</dt>
+                    <dd>{{ whenLabel() }}</dd>
+                  </div>
+                  <div class="review-row">
+                    <dt>Camera</dt>
+                    <dd>{{ cameraLabel() }}</dd>
+                  </div>
+                  <div class="review-row">
+                    <dt>Duration</dt>
+                    <dd>{{ durationLabel() }}</dd>
+                  </div>
+                  <div class="review-row">
+                    <dt>Brief</dt>
+                    <dd class="review-brief">{{ state().brief || '—' }}</dd>
+                  </div>
+                  @if (state().photographerId) {
+                    <div class="review-row">
+                      <dt>Preferred photographer</dt>
+                      <dd>{{ state().photographerId }}</dd>
+                    </div>
+                  }
+                </dl>
+
+                <p class="book-trust">
+                  No charge until confirmed · Dispatch subject to availability
+                </p>
+
+                @if (submitError()) {
+                  <div class="book-alert" role="alert">
+                    <p>{{ submitError() }}</p>
+                    <button
+                      type="button"
+                      class="bmc-btn bmc-btn--secondary"
+                      (click)="retrySubmit()"
+                      [disabled]="submitting()"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Desktop nav -->
+          <div class="book-nav book-nav--desktop">
+            <button
+              type="button"
+              class="bmc-btn bmc-btn--ghost book-nav__back"
+              (click)="prev()"
+              [disabled]="!canGoPrev() || submitting()"
+              aria-label="Go to previous step"
+            >
+              Back
+            </button>
+
+            @if (!isLastStep()) {
+              <button
+                type="button"
+                class="bmc-btn bmc-btn--primary book-nav__continue"
+                (click)="next()"
+                [disabled]="!canProceed()"
+                aria-label="Continue to next step"
+              >
+                Continue
+              </button>
+            } @else {
+              <button
+                type="button"
+                class="bmc-btn bmc-btn--primary bmc-btn--lg book-nav__continue"
+                (click)="submit()"
+                [disabled]="submitting() || !canProceed()"
+                [attr.aria-busy]="submitting()"
+                aria-label="Submit booking request"
+              >
+                @if (submitting()) {
+                  Submitting…
+                } @else {
+                  Book now
+                }
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile sticky bottom CTA -->
+      <div class="book-nav book-nav--mobile">
+        <button
+          type="button"
+          class="bmc-btn bmc-btn--ghost book-nav__back"
+          (click)="prev()"
+          [disabled]="!canGoPrev() || submitting()"
+          aria-label="Go to previous step"
+        >
+          Back
+        </button>
+
+        @if (!isLastStep()) {
+          <button
+            type="button"
+            class="bmc-btn bmc-btn--primary book-nav__continue"
+            (click)="next()"
+            [disabled]="!canProceed()"
+            aria-label="Continue to next step"
+          >
+            Continue
+          </button>
+        } @else {
+          <button
+            type="button"
+            class="bmc-btn bmc-btn--primary bmc-btn--lg book-nav__continue"
+            (click)="submit()"
+            [disabled]="submitting() || !canProceed()"
+            [attr.aria-busy]="submitting()"
+            aria-label="Submit booking request"
+          >
+            @if (submitting()) {
+              Submitting…
+            } @else {
+              Book now
+            }
+          </button>
+        }
+      </div>
+    }
+  </div>
+</section>

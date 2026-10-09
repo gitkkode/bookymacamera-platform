@@ -1,0 +1,72 @@
+<header
+  class="nav"
+  [class.nav--scrolled]="scrolled()"
+  [class.nav--open]="menuOpen()"
+>
+  <div class="nav__inner">
+    <a routerLink="/" class="nav__logo" (click)="closeMenu()">BOOKMYCAMERA</a>
+
+    <nav class="nav__center" aria-label="Primary">
+      <ul>
+        @for (link of links; track link.path) {
+          <li>
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="nav__right">
+      <a routerLink="/book" class="nav__book" (click)="closeMenu()">BOOK NOW</a>
+      <button
+        type="button"
+        class="nav__toggle"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="nav-drawer"
+        aria-label="Toggle menu"
+        (click)="toggleMenu()"
+      >
+        <span [class.is-open]="menuOpen()"></span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="nav-drawer"
+    class="nav__drawer"
+    [class.is-open]="menuOpen()"
+    [attr.aria-hidden]="!menuOpen()"
+  >
+    <nav aria-label="Mobile">
+      <ul>
+        @for (link of links; track link.path) {
+          <li>
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+              (click)="closeMenu()"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+        <li>
+          <a routerLink="/corporate" (click)="closeMenu()">Corporate</a>
+        </li>
+        <li>
+          <a routerLink="/contact" (click)="closeMenu()">Contact</a>
+        </li>
+      </ul>
+      <a routerLink="/book" class="bmc-btn bmc-btn--primary bmc-btn--lg" (click)="closeMenu()">
+        BOOK NOW
+      </a>
+    </nav>
+  </div>
+</header>

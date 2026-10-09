@@ -1,0 +1,103 @@
+:host {
+  display: inline-flex;
+}
+
+:host(.w-full),
+:host([class.w-full]) {
+  display: flex;
+  width: 100%;
+}
+
+:host(.w-full) .bmc-btn,
+:host([class.w-full]) .bmc-btn {
+  width: 100%;
+}
+
+.bmc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.85rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--bmc-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  border-radius: var(--bmc-radius-full);
+  border: 1.5px solid transparent;
+  transition:
+    background var(--bmc-duration) var(--bmc-ease),
+    color var(--bmc-duration) var(--bmc-ease),
+    border-color var(--bmc-duration) var(--bmc-ease),
+    box-shadow var(--bmc-duration) var(--bmc-ease),
+    transform var(--bmc-duration) var(--bmc-ease);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.bmc-btn:focus-visible {
+  outline: 2px solid var(--bmc-primary);
+  outline-offset: 3px;
+}
+
+.bmc-btn:disabled,
+.bmc-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.bmc-btn--primary {
+  background: var(--bmc-primary);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 10px 28px rgba(196, 92, 26, 0.22);
+}
+
+.bmc-btn--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--bmc-primary-hover);
+  box-shadow: 0 14px 32px rgba(196, 92, 26, 0.28);
+  transform: translateY(-1px);
+}
+
+.bmc-btn--secondary {
+  background-color: var(--bmc-paper);
+  color: var(--bmc-primary);
+  border-color: rgba(196, 92, 26, 0.35);
+}
+
+.bmc-btn--secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--bmc-primary);
+  background: var(--bmc-primary-soft);
+  transform: translateY(-1px);
+}
+
+.bmc-btn--ghost {
+  background-color: transparent;
+  color: var(--bmc-ink);
+  border-color: transparent;
+}
+
+.bmc-btn--ghost:hover:not(:disabled):not([aria-disabled="true"]) {
+  color: var(--bmc-primary);
+}
+
+.bmc-btn--lg {
+  min-height: 3.25rem;
+  padding: 0.9rem 1.85rem;
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bmc-btn,
+  .bmc-btn:hover {
+    transition: none;
+    transform: none;
+  }
+}

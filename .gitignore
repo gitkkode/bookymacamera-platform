@@ -1,0 +1,23 @@
+# API is not tracked
+bookmycamera-api/
+
+# Dependencies and build output
+node_modules/
+dist/
+.angular/
+coverage/
+out-tsc/
+tmp/
+
+# Env and secrets
+.env
+.env.*
+
+# Editors and OS
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,137 @@
+<div class="page">
+  @if (loading()) {
+    <div class="shell state-wrap">
+      <div class="state-panel" role="status">
+        <p class="state-panel__title">Loading photographer…</p>
+        <p class="state-panel__text">Fetching profile details.</p>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="shell state-wrap">
+      <div class="state-panel state-panel--error" role="alert">
+        <p class="state-panel__title">Something went wrong</p>
+        <p class="state-panel__text">{{ error() }}</p>
+        <button type="button" class="btn btn--primary" (click)="retry()">Retry</button>
+      </div>
+    </div>
+  } @else if (notFound() || !photographer()) {
+    <div class="shell state-wrap">
+      <div class="state-panel" role="status">
+        <p class="eyebrow">404</p>
+        <p class="state-panel__title">Photographer not found</p>
+        <p class="state-panel__text">
+          That profile is not available. Browse the network or book a shoot and we will match someone.
+        </p>
+        <div class="state-panel__actions">
+          <a routerLink="/photographers" class="btn btn--primary">Back to photographers</a>
+          <a routerLink="/book" class="btn btn--ghost">Book now</a>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @let ph = photographer()!;
+    <div class="shell detail-wrap">
+      <a routerLink="/photographers" class="back-link">← All photographers</a>
+
+      <div class="detail">
+        <div class="detail__main">
+          <div class="portrait">
+            <img
+              [src]="ph.image"
+              [alt]="ph.name"
+              width="720"
+              height="900"
+              fetchpriority="high"
+            />
+            @if (ph.availableToday) {
+              <span class="portrait__avail">Available today</span>
+            } @else {
+              <span class="portrait__avail portrait__avail--muted">By schedule</span>
+            }
+          </div>
+
+          <header class="profile-head">
+            <p class="eyebrow">{{ ph.location }}</p>
+            <h1 class="profile-title">{{ ph.name }}</h1>
+            <p class="profile-specs">
+              @for (s of ph.specialities; track s; let last = $last) {
+                <span>{{ s }}{{ last ? '' : ' · ' }}</span>
+              }
+            </p>
+            <p class="profile-stats">
+              <span class="profile-stats__rating">{{ ph.rating.toFixed(1) }} ★</span>
+              <span>{{ ph.shoots }} shoots</span>
+              <span>{{ ph.experience }}</span>
+            </p>
+            <p class="lede">{{ ph.bio }}</p>
+            <p class="demo-note">Profiles shown for demonstration</p>
+          </header>
+
+          <section class="portfolio-section" aria-labelledby="portfolio-heading">
+            <header class="section__head">
+              <p class="eyebrow">Portfolio</p>
+              <h2 id="portfolio-heading" class="display">Selected work</h2>
+            </header>
+            <div class="portfolio">
+              @for (shot of ph.portfolio; track shot; let i = $index) {
+                <figure class="portfolio__item">
+                  <img
+                    [src]="shot"
+                    [alt]="ph.name + ' portfolio ' + (i + 1)"
+                    width="800"
+                    height="1000"
+                    loading="lazy"
+                  />
+                </figure>
+              }
+            </div>
+          </section>
+        </div>
+
+        <aside class="detail__aside">
+          <div class="book-card">
+            <p class="book-card__label">Book this photographer</p>
+            <p class="book-card__name">{{ ph.name }}</p>
+            <p class="book-card__meta">{{ ph.location }} · {{ ph.rating.toFixed(1) }} ★</p>
+            @if (ph.availableToday) {
+              <p class="book-card__badge">Available today</p>
+            }
+            <ul class="book-card__points">
+              <li>Matched to your brief &amp; location</li>
+              <li>No charge until confirmed</li>
+              <li>Dispatch subject to availability</li>
+            </ul>
+            <a
+              class="btn btn--primary btn--block"
+              [routerLink]="['/book']"
+              [queryParams]="{ photographer: ph.id }"
+            >
+              Book photographer
+            </a>
+            <a routerLink="/book" class="btn btn--ghost btn--block">Book any shoot</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="mobile-cta">
+      <div class="mobile-cta__info">
+        <p class="mobile-cta__name">{{ ph.name }}</p>
+        <p class="mobile-cta__meta">
+          @if (ph.availableToday) {
+            Available today
+          } @else {
+            {{ ph.location }}
+          }
+        </p>
+      </div>
+      <a
+        class="btn btn--primary"
+        [routerLink]="['/book']"
+        [queryParams]="{ photographer: ph.id }"
+      >
+        Book
+      </a>
+    </div>
+  }
+</div>

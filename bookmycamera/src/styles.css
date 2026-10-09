@@ -1,0 +1,646 @@
+/* ==========================================================================
+   BookMyCamera Design System
+   Solid photographic palette · tungsten amber · ink · print paper
+   Plus Jakarta Sans · no neon gradients
+   ========================================================================== */
+
+:root {
+  /* Darkroom / print neutrals */
+  --bmc-black: #141210;
+  --bmc-ink: #1c1917;
+  --bmc-muted: #6b6560;
+  --bmc-muted-2: #9a938c;
+  --bmc-line: #e6e0d8;
+  --bmc-line-soft: #efeae3;
+  --bmc-paper: #ffffff;
+  --bmc-paper-warm: #faf7f2;
+  --bmc-paper-2: #f2ebe3;
+  --bmc-danger: #b42318;
+  --bmc-success: #1a6b5c;
+
+  /* Rich solid brand — golden-hour amber + forest teal */
+  --bmc-primary: #c45c1a;
+  --bmc-primary-hover: #a34c15;
+  --bmc-primary-soft: rgba(196, 92, 26, 0.1);
+  --bmc-secondary: #1f4f4a;
+  --bmc-secondary-soft: rgba(31, 79, 74, 0.1);
+  --bmc-teal: #1f4f4a;
+  --bmc-teal-soft: rgba(31, 79, 74, 0.1);
+  --bmc-sun: #b8860b;
+  --bmc-sun-soft: rgba(184, 134, 11, 0.12);
+  --bmc-sky: #3d5a6c;
+
+  /* Legacy names kept as solid fills (no rainbow gradients) */
+  --bmc-gradient: var(--bmc-primary);
+  --bmc-gradient-soft: var(--bmc-paper-warm);
+  --bmc-gradient-hero: var(--bmc-paper-warm);
+
+  /* Legacy aliases */
+  --bmc-near-black: var(--bmc-black);
+  --bmc-border: var(--bmc-line);
+  --bmc-surface: var(--bmc-paper);
+  --bmc-surface-2: var(--bmc-paper-2);
+  --bmc-white: #ffffff;
+  --bmc-accent: var(--bmc-primary);
+  --bmc-accent-hover: var(--bmc-primary-hover);
+  --bmc-accent-soft: var(--bmc-primary-soft);
+
+  /* Typography — keep Plus Jakarta Sans */
+  --bmc-font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --bmc-font-serif: var(--bmc-font-sans);
+  --bmc-font-display: var(--bmc-font-sans);
+  --bmc-font-body: var(--bmc-font-sans);
+
+  /* Spacing */
+  --bmc-space-1: 0.25rem;
+  --bmc-space-2: 0.5rem;
+  --bmc-space-3: 0.75rem;
+  --bmc-space-4: 1rem;
+  --bmc-space-5: 1.25rem;
+  --bmc-space-6: 1.5rem;
+  --bmc-space-8: 2rem;
+  --bmc-space-10: 2.5rem;
+  --bmc-space-12: 3rem;
+  --bmc-space-16: 4rem;
+  --bmc-space-20: 5rem;
+  --bmc-space-24: 6rem;
+
+  /* Radii — soft & rounded */
+  --bmc-radius-sm: 12px;
+  --bmc-radius: 18px;
+  --bmc-radius-md: 24px;
+  --bmc-radius-lg: 32px;
+  --bmc-radius-xl: 44px;
+  --bmc-radius-full: 9999px;
+
+  /* Soft elevation — warm ink, not neon tint */
+  --bmc-shadow-sm: 0 2px 10px rgba(28, 25, 23, 0.05), 0 1px 2px rgba(28, 25, 23, 0.04);
+  --bmc-shadow: 0 12px 36px rgba(28, 25, 23, 0.08), 0 4px 12px rgba(28, 25, 23, 0.04);
+  --bmc-shadow-md: 0 20px 50px rgba(28, 25, 23, 0.1), 0 8px 18px rgba(28, 25, 23, 0.05);
+  --bmc-shadow-lg: 0 32px 80px rgba(28, 25, 23, 0.12), 0 12px 28px rgba(28, 25, 23, 0.06);
+  --bmc-shadow-glow: 0 24px 64px rgba(196, 92, 26, 0.14), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  --bmc-shadow-focus: 0 0 0 3px rgba(196, 92, 26, 0.28);
+
+  /* Glass */
+  --bmc-glass: rgba(255, 255, 255, 0.72);
+  --bmc-glass-strong: rgba(255, 255, 255, 0.86);
+  --bmc-glass-border: rgba(255, 255, 255, 0.65);
+  --bmc-glass-blur: blur(18px) saturate(1.35);
+
+  /* Layout */
+  --bmc-container: 1180px;
+  --bmc-container-wide: 1360px;
+  --bmc-nav-height: 76px;
+  --bmc-nav-height-scrolled: 64px;
+
+  /* Motion */
+  --bmc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --bmc-duration: 320ms;
+  --bmc-duration-slow: 560ms;
+
+  --bmc-z-nav: 100;
+  --bmc-z-overlay: 200;
+  --bmc-z-modal: 300;
+  --bmc-z-sticky-cta: 90;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--bmc-font-sans);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--bmc-ink);
+  background-color: var(--bmc-paper-warm);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--bmc-black);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bmc-skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 9999;
+  padding: 0.75rem 1.25rem;
+  background: var(--bmc-black);
+  color: #fff;
+  border-radius: var(--bmc-radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.bmc-skip-link:focus {
+  top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Layout
+   -------------------------------------------------------------------------- */
+.container {
+  width: min(100% - 2.5rem, var(--bmc-container));
+  margin-inline: auto;
+}
+
+.container--wide {
+  width: min(100% - 2.5rem, var(--bmc-container-wide));
+  margin-inline: auto;
+}
+
+@media (max-width: 480px) {
+  .container,
+  .container--wide {
+    width: min(100% - 1.5rem, var(--bmc-container));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Typography utilities
+   -------------------------------------------------------------------------- */
+.bmc-serif {
+  font-family: var(--bmc-font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.bmc-display {
+  font-family: var(--bmc-font-display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--bmc-black);
+  font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+}
+
+.bmc-display--md {
+  font-size: clamp(2.1rem, 5vw, 3.75rem);
+}
+
+.bmc-display--sm {
+  font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+  line-height: 1.1;
+}
+
+.bmc-eyebrow {
+  font-family: var(--bmc-font-sans);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bmc-primary);
+}
+
+.bmc-lede {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--bmc-muted);
+  max-width: 34rem;
+  font-weight: 500;
+}
+
+.bmc-star {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-left: 0.2em;
+  vertical-align: super;
+  background: var(--bmc-black);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons — black pills
+   -------------------------------------------------------------------------- */
+.bmc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.85rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--bmc-radius-full);
+  border: 1.5px solid transparent;
+  font-family: var(--bmc-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition:
+    background var(--bmc-duration) var(--bmc-ease),
+    color var(--bmc-duration) var(--bmc-ease),
+    border-color var(--bmc-duration) var(--bmc-ease),
+    transform var(--bmc-duration) var(--bmc-ease),
+    box-shadow var(--bmc-duration) var(--bmc-ease);
+  white-space: nowrap;
+}
+
+.bmc-btn:focus-visible {
+  outline: 2px solid var(--bmc-black);
+  outline-offset: 3px;
+}
+
+.bmc-btn:disabled,
+.bmc-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.bmc-btn--primary {
+  background: var(--bmc-primary);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 10px 28px rgba(196, 92, 26, 0.22);
+}
+
+.bmc-btn--primary:hover {
+  background: var(--bmc-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(196, 92, 26, 0.28);
+}
+
+.bmc-btn--secondary {
+  background: var(--bmc-paper);
+  color: var(--bmc-primary);
+  border-color: rgba(196, 92, 26, 0.35);
+}
+
+.bmc-btn--secondary:hover {
+  border-color: var(--bmc-primary);
+  background: var(--bmc-primary-soft);
+  transform: translateY(-1px);
+}
+
+.bmc-btn--ghost {
+  background: transparent;
+  color: var(--bmc-black);
+  border-color: transparent;
+  padding-inline: 0.75rem;
+}
+
+.bmc-btn--ghost:hover {
+  color: var(--bmc-muted);
+}
+
+.bmc-btn--lg {
+  min-height: 3.25rem;
+  padding: 0.9rem 1.85rem;
+  font-size: 0.875rem;
+}
+
+.bmc-btn--icon {
+  width: 3rem;
+  height: 3rem;
+  min-height: 3rem;
+  padding: 0;
+  border-radius: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Cards / surfaces
+   -------------------------------------------------------------------------- */
+.bmc-card {
+  background: var(--bmc-paper);
+  border: 1px solid var(--bmc-line-soft);
+  border-radius: var(--bmc-radius-md);
+  box-shadow: var(--bmc-shadow);
+}
+
+.bmc-glass {
+  background: var(--bmc-glass);
+  backdrop-filter: var(--bmc-glass-blur);
+  -webkit-backdrop-filter: var(--bmc-glass-blur);
+  border: 1px solid var(--bmc-glass-border);
+  box-shadow: var(--bmc-shadow-glow);
+}
+
+.bmc-section {
+  padding-block: clamp(4.5rem, 10vw, 8rem);
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Form controls
+   -------------------------------------------------------------------------- */
+.bmc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.bmc-field__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bmc-muted);
+}
+
+.bmc-field__value,
+.bmc-input,
+.bmc-select,
+.bmc-textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: var(--bmc-font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bmc-black);
+  padding: 0.15rem 0;
+}
+
+.bmc-input,
+.bmc-select,
+.bmc-textarea {
+  border: 1px solid var(--bmc-line);
+  border-radius: var(--bmc-radius);
+  padding: 0.85rem 1rem;
+  background: var(--bmc-paper);
+}
+
+.bmc-input:focus,
+.bmc-select:focus,
+.bmc-textarea:focus {
+  outline: none;
+  border-color: var(--bmc-black);
+  box-shadow: var(--bmc-shadow-focus);
+}
+
+.bmc-textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+/* --------------------------------------------------------------------------
+   Reveal / motion
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity var(--bmc-duration-slow) var(--bmc-ease),
+    transform var(--bmc-duration-slow) var(--bmc-ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
+/* --------------------------------------------------------------------------
+   States
+   -------------------------------------------------------------------------- */
+.bmc-state {
+  padding: 2rem;
+  text-align: center;
+  color: var(--bmc-muted);
+  font-size: 0.95rem;
+}
+
+.bmc-state--error {
+  color: var(--bmc-danger);
+}
+
+.bmc-skeleton {
+  background: linear-gradient(90deg, var(--bmc-paper-2) 25%, var(--bmc-line-soft) 50%, var(--bmc-paper-2) 75%);
+  background-size: 200% 100%;
+  animation: bmc-shimmer 1.4s infinite linear;
+  border-radius: var(--bmc-radius);
+}
+
+@keyframes bmc-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Horizontal scroll rail
+   -------------------------------------------------------------------------- */
+.bmc-rail {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem 0 1.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.bmc-rail > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+/* --------------------------------------------------------------------------
+   Page shell helpers used by secondary pages
+   -------------------------------------------------------------------------- */
+.page-hero {
+  padding: clamp(5rem, 12vw, 8rem) 0 clamp(3rem, 6vw, 4rem);
+}
+
+.page-hero__title {
+  font-family: var(--bmc-font-display);
+  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--bmc-black);
+  max-width: 14ch;
+}
+
+.page-hero__lede {
+  margin-top: 1.25rem;
+  font-size: 1.05rem;
+  color: var(--bmc-muted);
+  max-width: 36rem;
+  line-height: 1.65;
+}
+
+.page-hero__eyebrow {
+  margin-bottom: 1rem;
+}
+
+.page-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.section-head {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.finale {
+  background: var(--bmc-black);
+  color: #fff;
+  padding: clamp(4rem, 10vw, 7rem) 0;
+  text-align: center;
+}
+
+.finale__inner {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.finale h2,
+.finale .page-hero__title {
+  color: #fff;
+  font-family: var(--bmc-font-display);
+  font-size: clamp(2.35rem, 5.5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.finale p {
+  color: rgba(255, 255, 255, 0.65);
+  margin: 1rem auto 1.75rem;
+  max-width: 28rem;
+}
+
+.finale .bmc-btn--primary {
+  background: #fff;
+  color: var(--bmc-black);
+}
+
+.finale .bmc-btn--primary:hover {
+  background: #f0f0f0;
+}
+
+/* Sticky mobile book CTA */
+.bmc-sticky-book {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .bmc-sticky-book {
+    display: flex;
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: var(--bmc-z-sticky-cta);
+    align-items: center;
+    justify-content: center;
+    min-height: 3.25rem;
+    padding: 0.9rem 1.25rem;
+    background: var(--bmc-primary);
+    color: #fff;
+    border-radius: var(--bmc-radius-full);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 0 16px 40px rgba(196, 92, 26, 0.32);
+  }
+
+  body {
+    padding-bottom: 5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,111 @@
+<div class="page">
+  <section class="hero" aria-label="Services catalogue">
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Service marketplace</p>
+        <h1 class="hero__title">Photography services ready to book</h1>
+        <p class="lede">
+          Food, product, portrait, events, corporate, fashion, and more — pick a service,
+          then book a matched photographer and camera.
+        </p>
+        <p class="hero__count" aria-live="polite">
+          @if (loading()) {
+            Loading catalogue…
+          } @else if (services().length > 0) {
+            <strong>{{ services().length }}</strong>
+            {{ services().length === 1 ? 'service' : 'services' }} available
+          } @else {
+            Browse services below
+          }
+        </p>
+      </div>
+      <div class="hero__actions">
+        <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+        <a href="#catalogue" class="bmc-btn bmc-btn--ghost">Browse services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="catalogue" aria-labelledby="services-grid-heading">
+    <div class="shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="services-grid-heading" class="display">All services</h2>
+          <p class="lede">
+            Explore what we shoot, then book in minutes. Dispatch in as little as 90 minutes,
+            subject to availability and location.
+          </p>
+        </div>
+        @if (!loading() && !error()) {
+          <p class="result-count" aria-live="polite">
+            {{ services().length }}
+            {{ services().length === 1 ? 'result' : 'results' }}
+          </p>
+        }
+      </header>
+
+      @if (loading()) {
+        <p class="state" role="status">Loading services…</p>
+      } @else if (error()) {
+        <div class="state state--error" role="alert">
+          <p>{{ error() }}</p>
+          <button type="button" class="bmc-btn bmc-btn--ghost" (click)="load()">Retry</button>
+        </div>
+      } @else {
+        <div class="svc-grid">
+          @for (svc of services(); track svc.id) {
+            <article class="svc-card" appReveal>
+              <a
+                class="svc-card__media"
+                [routerLink]="['/services', svc.slug]"
+                [attr.aria-label]="svc.title"
+              >
+                <img
+                  [src]="svc.image"
+                  [alt]="svc.title"
+                  width="900"
+                  height="700"
+                  loading="lazy"
+                />
+              </a>
+              <div class="svc-card__body">
+                <p class="svc-card__tag">{{ svc.shortTitle }}</p>
+                <h3 class="svc-card__title">
+                  <a [routerLink]="['/services', svc.slug]">{{ svc.title }}</a>
+                </h3>
+                <p class="svc-card__desc">{{ svc.description }}</p>
+                @if (svc.useCases.length) {
+                  <ul class="svc-card__uses" aria-label="Example use cases">
+                    @for (u of svc.useCases.slice(0, 3); track u) {
+                      <li>{{ u }}</li>
+                    }
+                  </ul>
+                }
+                <div class="svc-card__actions">
+                  <a class="bmc-btn bmc-btn--ghost" [routerLink]="['/services', svc.slug]">
+                    View details
+                  </a>
+                  <a
+                    class="bmc-btn bmc-btn--primary"
+                    [routerLink]="['/book']"
+                    [queryParams]="{ type: svc.shortTitle }"
+                  >
+                    BOOK NOW
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="section finale" aria-labelledby="svc-finale">
+    <div class="shell finale__inner" appReveal>
+      <h2 id="svc-finale" class="display">Ready to shoot?</h2>
+      <p class="lede">One booking. Photographer and camera matched to your brief.</p>
+      <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+    </div>
+  </section>
+</div>

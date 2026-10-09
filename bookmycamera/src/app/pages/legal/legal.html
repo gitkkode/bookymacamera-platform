@@ -1,0 +1,40 @@
+<div class="page-legal">
+  @let legal = doc();
+
+  <section class="page-hero bmc-section--dark" aria-label="Legal document">
+    <div class="container page-hero__content">
+      <p class="bmc-eyebrow page-hero__eyebrow" appReveal>Legal</p>
+      <h1 class="page-hero__title" appReveal>{{ legal.title }}</h1>
+      <p class="page-hero__meta" appReveal>
+        Last updated {{ legal.updated }}. Placeholder professional copy — not legal advice.
+      </p>
+    </div>
+  </section>
+
+  <section class="bmc-section">
+    <div class="container legal-layout">
+      <nav class="legal-nav" aria-label="Legal documents" appReveal>
+        <a routerLink="/privacy" routerLinkActive="is-active">Privacy Policy</a>
+        <a routerLink="/terms" routerLinkActive="is-active">Terms</a>
+        <a routerLink="/cancellation" routerLinkActive="is-active">Cancellation Policy</a>
+      </nav>
+
+      <article class="legal-body">
+        @for (section of legal.sections; track section.heading) {
+          <section class="legal-section" appReveal>
+            <h2>{{ section.heading }}</h2>
+            @for (p of section.paragraphs; track p) {
+              <p>{{ p }}</p>
+            }
+          </section>
+        }
+
+        <div class="legal-cta" appReveal>
+          <p>Need help with a booking?</p>
+          <app-bmc-button variant="primary" href="/book">BOOK NOW</app-bmc-button>
+          <a routerLink="/contact" class="bmc-btn bmc-btn--ghost">Contact us</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

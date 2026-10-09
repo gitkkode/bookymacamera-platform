@@ -1,0 +1,102 @@
+<div class="page">
+  <section class="hero" aria-label="How it works">
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">How it works</p>
+        <h1 class="hero__title">Book. Match. Dispatch. Shoot. Deliver.</h1>
+        <p class="lede">
+          Professional photography without the logistics maze — one booking that brings
+          the photographer and the camera together. Dispatch in as little as 90 minutes,
+          subject to availability and location.
+        </p>
+      </div>
+      <div class="hero__actions">
+        <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+        <a routerLink="/services" class="bmc-btn bmc-btn--ghost">Browse services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="steps-heading">
+    <div class="shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="steps-heading" class="display">Five clear steps</h2>
+          <p class="lede">An operational flow from brief to delivered frames.</p>
+        </div>
+      </header>
+
+      <ol class="flow">
+        @for (step of steps; track step.key; let i = $index) {
+          <li class="flow__step" appReveal>
+            <div class="flow__rail" aria-hidden="true">
+              <span class="flow__index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+              @if (i < steps.length - 1) {
+                <span class="flow__line"></span>
+              }
+            </div>
+            <div class="flow__card">
+              <p class="flow__key">{{ step.key }}</p>
+              <h3 class="flow__title">{{ step.title }}</h3>
+              <p class="flow__body">{{ step.body }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section note-section" aria-labelledby="dispatch-note">
+    <div class="shell">
+      <div class="dispatch-note" appReveal>
+        <p class="eyebrow">Speed</p>
+        <h2 id="dispatch-note" class="display">90 minutes is the ambition</h2>
+        <p class="lede">
+          When timing matters, we work to get a team moving fast. Availability, distance,
+          and shoot complexity still matter — we use honest wording, not hard guarantees.
+        </p>
+        <app-bmc-button variant="primary" href="/book">BOOK NOW</app-bmc-button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-faq">
+    <div class="shell faq-shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="how-faq" class="display">Questions, answered</h2>
+          <p class="lede">Practical answers about dispatch, cameras, and delivery.</p>
+        </div>
+      </header>
+      <div class="faq">
+        @for (faq of faqs; track faq.q; let i = $index) {
+          <div class="faq__item" appReveal>
+            <button
+              type="button"
+              class="faq__trigger"
+              [attr.aria-expanded]="openFaq() === i"
+              [attr.aria-controls]="'how-faq-' + i"
+              (click)="toggleFaq(i)"
+            >
+              <span>{{ faq.q }}</span>
+              <span class="faq__icon" aria-hidden="true">{{ openFaq() === i ? '−' : '+' }}</span>
+            </button>
+            @if (openFaq() === i) {
+              <div class="faq__panel" [id]="'how-faq-' + i">
+                <p>{{ faq.a }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section finale" aria-labelledby="how-cta">
+    <div class="shell finale__inner" appReveal>
+      <h2 id="how-cta" class="display">Ready when you are</h2>
+      <p class="lede">Start a booking — we handle the match and the dispatch.</p>
+      <a routerLink="/book" class="bmc-btn bmc-btn--primary bmc-btn--lg">BOOK NOW</a>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,22 @@
+@if (href(); as link) {
+  <a
+    [routerLink]="link"
+    [class]="classes()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-disabled]="disabled() ? true : null"
+    [tabindex]="disabled() ? -1 : null"
+    (click)="onClick($event)"
+  >
+    <ng-content />
+  </a>
+} @else {
+  <button
+    [type]="type()"
+    [class]="classes()"
+    [disabled]="disabled()"
+    [attr.aria-label]="ariaLabel()"
+    (click)="onClick($event)"
+  >
+    <ng-content />
+  </button>
+}

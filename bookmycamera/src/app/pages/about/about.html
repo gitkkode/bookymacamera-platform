@@ -1,0 +1,68 @@
+<div class="page">
+  <section class="hero" aria-label="About BookMyCamera">
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">About</p>
+        <h1 class="hero__title">Great photos should be easy to book</h1>
+        <p class="lede">
+          BookMyCamera pairs a professional photographer with a professional camera in one booking —
+          so you spend less time coordinating and more time shooting.
+        </p>
+      </div>
+      <div class="hero__actions">
+        <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+        <a routerLink="/how-it-works" class="bmc-btn bmc-btn--ghost">How it works</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="story-heading">
+    <div class="shell story__grid">
+      <header class="section__head" appReveal>
+        <p class="eyebrow">Our story</p>
+        <h2 id="story-heading" class="display">A simpler way to get the shot</h2>
+      </header>
+      <div class="story__copy" appReveal>
+        <p>
+          Hiring a professional photographer traditionally means finding someone,
+          checking availability, discussing equipment, negotiating pricing, and waiting
+          for a date.
+        </p>
+        <p>
+          BookMyCamera is built around a simpler idea: tell us what you need, and we’ll
+          get the right professional to you — with the right camera.
+        </p>
+        <p class="story__highlight">
+          Tell us what you need. We’ll get the right professional to you.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pillars" aria-labelledby="pillars-heading">
+    <div class="shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="pillars-heading" class="display">What we stand for</h2>
+          <p class="lede">Four commitments behind every BookMyCamera booking.</p>
+        </div>
+      </header>
+      <ul class="pillar-list">
+        @for (p of pillars; track p; let i = $index) {
+          <li class="pillar" appReveal>
+            <span class="pillar__num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+            <span class="pillar__text">{{ p }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section finale" aria-labelledby="about-cta">
+    <div class="shell finale__inner" appReveal>
+      <h2 id="about-cta" class="display">Ready for easier photography?</h2>
+      <p class="lede">Book a shoot — photographer and camera, matched to your brief.</p>
+      <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+    </div>
+  </section>
+</div>

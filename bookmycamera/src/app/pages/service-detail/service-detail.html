@@ -1,0 +1,171 @@
+<div class="page">
+  @if (loading()) {
+    <div class="shell state-wrap">
+      <p class="state" role="status">Loading service…</p>
+    </div>
+  } @else if (notFound() || !service()) {
+    <div class="shell state-wrap">
+      <div class="state-panel" appReveal>
+        <p class="eyebrow">404</p>
+        <h1 class="hero__title">Service not found</h1>
+        <p class="lede">
+          That service slug doesn’t match our catalogue. Browse all services or book a custom shoot.
+        </p>
+        <div class="hero__actions">
+          <app-bmc-button variant="primary" href="/services">View services</app-bmc-button>
+          <app-bmc-button variant="ghost" href="/book">BOOK NOW</app-bmc-button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @let svc = service()!;
+
+    <section class="hero" aria-label="Service detail">
+      <div class="shell hero__inner">
+        <div class="hero__copy">
+          <a routerLink="/services" class="back-link">← All services</a>
+          <p class="eyebrow">{{ svc.shortTitle }}</p>
+          <h1 class="hero__title">{{ svc.title }}</h1>
+          <p class="lede">{{ svc.description }}</p>
+        </div>
+        <div class="hero__actions">
+          <a
+            class="bmc-btn bmc-btn--primary bmc-btn--lg"
+            [routerLink]="['/book']"
+            [queryParams]="{ type: svc.shortTitle }"
+          >
+            BOOK NOW
+          </a>
+          <a routerLink="/pricing" class="bmc-btn bmc-btn--ghost">See pricing</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="shell detail-wrap">
+      <div class="detail">
+        <div class="detail__main">
+          <figure class="hero-media">
+            <img [src]="svc.image" [alt]="svc.title" width="1200" height="800" fetchpriority="high" />
+          </figure>
+
+          <section class="block" aria-labelledby="use-cases-heading">
+            <header class="block__head" appReveal>
+              <p class="eyebrow">Use cases</p>
+              <h2 id="use-cases-heading" class="display">Where this shines</h2>
+            </header>
+            <ul class="chip-list" appReveal>
+              @for (item of svc.useCases; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </section>
+
+          <section class="block" aria-labelledby="included-heading">
+            <header class="block__head" appReveal>
+              <p class="eyebrow">What's included</p>
+              <h2 id="included-heading" class="display">In a typical booking</h2>
+              <p class="lede">
+                Exact deliverables depend on duration and brief — confirmed when you book.
+              </p>
+            </header>
+            <ul class="included-list">
+              @for (item of svc.included; track item; let i = $index) {
+                <li appReveal>
+                  <span class="included-list__num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+                  <span>{{ item }}</span>
+                </li>
+              }
+            </ul>
+          </section>
+
+          @if (examples().length) {
+            <section class="block" aria-labelledby="examples-heading">
+              <header class="block__head" appReveal>
+                <p class="eyebrow">Example work</p>
+                <h2 id="examples-heading" class="display">The look of the work</h2>
+                <p class="lede">
+                  Representative samples to illustrate style — not a claim that every frame is a
+                  BookMyCamera client shoot.
+                </p>
+              </header>
+              <div class="example-grid">
+                @for (item of examples(); track item.id) {
+                  <figure class="example-card" appReveal>
+                    <img [src]="item.image" [alt]="item.alt" width="800" height="1000" loading="lazy" />
+                    <figcaption>{{ item.caption }}</figcaption>
+                  </figure>
+                }
+              </div>
+            </section>
+          }
+
+          <section class="block" aria-labelledby="faq-heading">
+            <header class="block__head" appReveal>
+              <p class="eyebrow">FAQ</p>
+              <h2 id="faq-heading" class="display">Common questions</h2>
+            </header>
+            <div class="faq" role="list">
+              @for (faq of svc.faqs; track faq.q; let i = $index) {
+                <div class="faq__item" role="listitem" appReveal>
+                  <button
+                    type="button"
+                    class="faq__trigger"
+                    [attr.aria-expanded]="openFaq() === i"
+                    [attr.aria-controls]="'faq-panel-' + i"
+                    (click)="toggleFaq(i)"
+                  >
+                    <span>{{ faq.q }}</span>
+                    <span class="faq__icon" aria-hidden="true">{{ openFaq() === i ? '−' : '+' }}</span>
+                  </button>
+                  @if (openFaq() === i) {
+                    <div class="faq__panel" [id]="'faq-panel-' + i">
+                      <p>{{ faq.a }}</p>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </section>
+        </div>
+
+        <aside class="detail__aside" aria-label="Book this service">
+          <div class="book-card" appReveal>
+            <p class="book-card__label">{{ svc.shortTitle }}</p>
+            <p class="book-card__title">Book this service</p>
+            <p class="book-card__meta">Photographer + camera matched to your brief</p>
+            <ul class="book-card__points">
+              <li>Professional photographer</li>
+              <li>Professional camera kit</li>
+              <li>Dispatch subject to availability</li>
+            </ul>
+            <a
+              class="bmc-btn bmc-btn--primary"
+              style="width: 100%"
+              [routerLink]="['/book']"
+              [queryParams]="{ type: svc.shortTitle }"
+            >
+              BOOK NOW
+            </a>
+            <a routerLink="/how-it-works" class="bmc-btn bmc-btn--ghost" style="width: 100%; margin-top: 0.5rem">
+              How it works
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="mobile-cta">
+      <div class="mobile-cta__info">
+        <p class="mobile-cta__title">{{ svc.shortTitle }}</p>
+        <p class="mobile-cta__sub">Photographer + camera</p>
+      </div>
+      <a
+        class="bmc-btn bmc-btn--primary"
+        [routerLink]="['/book']"
+        [queryParams]="{ type: svc.shortTitle }"
+      >
+        BOOK NOW
+      </a>
+    </div>
+  }
+</div>

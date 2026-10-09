@@ -1,0 +1,92 @@
+<div class="page">
+  <section class="hero" aria-label="Corporate photography">
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Corporate & B2B</p>
+        <h1 class="hero__title">Photography for businesses that move fast</h1>
+        <p class="lede">
+          One booking for photographer and camera — built for teams that cannot wait
+          on scattered freelancers and kit rentals.
+        </p>
+      </div>
+      <div class="hero__actions">
+        <a
+          class="bmc-btn bmc-btn--primary bmc-btn--lg"
+          routerLink="/contact"
+          [queryParams]="{ type: 'corporate' }"
+        >
+          Talk to BookMyCamera
+        </a>
+        <a
+          class="bmc-btn bmc-btn--ghost bmc-btn--lg"
+          routerLink="/book"
+          [queryParams]="{ type: 'Corporate' }"
+        >
+          Book a corporate shoot
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="targets-heading">
+    <div class="shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="targets-heading" class="display">Who we serve</h2>
+          <p class="lede">
+            Brands and teams that need campaign-ready frames without slowing down the calendar.
+          </p>
+        </div>
+      </header>
+      <ul class="target-grid">
+        @for (t of targets; track t) {
+          <li class="target-chip" appReveal>{{ t }}</li>
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section solutions-section" aria-labelledby="solutions-heading">
+    <div class="shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="solutions-heading" class="display">Corporate solutions</h2>
+          <p class="lede">How businesses book BookMyCamera — from one-offs to retainers.</p>
+        </div>
+      </header>
+      <div class="solution-grid">
+        @for (s of solutions; track s.title) {
+          <article class="solution-card" appReveal>
+            <h3>{{ s.title }}</h3>
+            <p>{{ s.body }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section finale" aria-labelledby="corp-cta">
+    <div class="shell finale__inner" appReveal>
+      <h2 id="corp-cta" class="display">Plan your next corporate shoot</h2>
+      <p class="lede">
+        Talk to the team for retainers and multi-site work — or book a corporate shoot now.
+      </p>
+      <div class="finale__actions">
+        <a
+          class="bmc-btn bmc-btn--primary bmc-btn--lg"
+          routerLink="/contact"
+          [queryParams]="{ type: 'corporate' }"
+        >
+          Talk to BookMyCamera
+        </a>
+        <a
+          class="bmc-btn bmc-btn--ghost bmc-btn--lg"
+          routerLink="/book"
+          [queryParams]="{ type: 'Corporate' }"
+        >
+          Book a corporate shoot
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

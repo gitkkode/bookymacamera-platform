@@ -1,0 +1,104 @@
+<div class="page">
+  <section class="hero" aria-label="Pricing">
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Pricing</p>
+        <h1 class="hero__title">Clear packages. Confirm on booking.</h1>
+        <p class="lede">
+          Choose a starting structure — Quick Shoot, Content, Event, or Custom.
+          Final pricing depends on city, duration, kit, and timing.
+        </p>
+        <p class="disclaimer">
+          Prices shown are indicative placeholders — not finalized BookMyCamera rates.
+          You confirm the quote when you book.
+        </p>
+      </div>
+      <div class="hero__actions">
+        <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+        <a routerLink="/corporate" class="bmc-btn bmc-btn--ghost">Corporate & custom</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="plans-heading">
+    <div class="shell">
+      <header class="section__head" appReveal>
+        <div>
+          <h2 id="plans-heading" class="display">Compare plans</h2>
+          <p class="lede">
+            Every plan includes a professional photographer and professional camera matched to your brief.
+          </p>
+        </div>
+      </header>
+
+      @if (loading()) {
+        <p class="state" role="status">Loading plans…</p>
+      } @else if (error()) {
+        <div class="state state--error" role="alert">
+          <p>{{ error() }}</p>
+          <button type="button" class="bmc-btn bmc-btn--ghost" (click)="load()">Retry</button>
+        </div>
+      } @else {
+        <div class="plan-grid">
+          @for (plan of plans(); track plan.id) {
+            <article
+              class="plan-card"
+              appReveal
+              [class.plan-card--featured]="plan.id === 'plan-content'"
+              [class.plan-card--custom]="plan.id === 'plan-custom'"
+            >
+              @if (plan.id === 'plan-content') {
+                <p class="plan-card__badge">Popular</p>
+              }
+              <p class="plan-card__name">{{ plan.name }}</p>
+              <p class="plan-card__duration">{{ plan.duration }}</p>
+              <p class="plan-card__price">{{ plan.priceLabel }}</p>
+              @if (plan.isPlaceholder) {
+                <p class="plan-card__note">
+                  Indicative — confirm on booking.
+                </p>
+              }
+              <ul class="plan-card__features">
+                @for (f of plan.features; track f) {
+                  <li>{{ f }}</li>
+                }
+              </ul>
+              @if (plan.id === 'plan-custom') {
+                <div class="plan-card__ctas">
+                  <a routerLink="/corporate" class="bmc-btn bmc-btn--primary plan-card__cta">
+                    Talk corporate
+                  </a>
+                  <a
+                    routerLink="/contact"
+                    [queryParams]="{ type: 'corporate' }"
+                    class="bmc-btn bmc-btn--ghost plan-card__cta"
+                  >
+                    Contact us
+                  </a>
+                </div>
+              } @else {
+                <a routerLink="/book" class="bmc-btn bmc-btn--primary plan-card__cta">
+                  {{ plan.cta }}
+                </a>
+              }
+            </article>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="section finale" aria-labelledby="pricing-cta">
+    <div class="shell finale__inner" appReveal>
+      <h2 id="pricing-cta" class="display">Need something tailored?</h2>
+      <p class="lede">Corporate, multi-location, and monthly content — start a booking or talk to the team.</p>
+      <div class="finale__actions">
+        <app-bmc-button variant="primary" size="lg" href="/book">BOOK NOW</app-bmc-button>
+        <a routerLink="/corporate" class="bmc-btn bmc-btn--ghost">Corporate solutions</a>
+        <a routerLink="/contact" [queryParams]="{ type: 'corporate' }" class="bmc-btn bmc-btn--ghost">
+          Contact us
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,452 @@
+<div class="home">
+  <!-- 1. HERO — booking product first -->
+  <section class="hero" aria-label="Book a professional shoot">
+    <div class="container--wide hero__grid">
+      <div class="hero__copy">
+        <p class="hero__brand reveal">
+          <span class="hero__brand-dot" aria-hidden="true"></span>
+          BookMyCamera
+        </p>
+        <h1 class="hero__title reveal reveal-delay-1">
+          We help you book photographers,
+          <span class="hero__accent">hassle free</span>
+        </h1>
+        <p class="hero__lede reveal reveal-delay-2">
+          Any event. Any kind of party. Birthdays, launches, dinners, weekends —
+          tell us when and where, and we send a pro with the right camera.
+          Express when you need it. Simple when you don’t.
+        </p>
+
+        <ul class="hero__chips reveal reveal-delay-3" aria-label="Trust signals">
+          @for (chip of trustChips; track chip) {
+            <li>{{ chip }}</li>
+          }
+        </ul>
+
+        <div class="hero__links reveal reveal-delay-4">
+          <a routerLink="/how-it-works" class="hero__text-link">How it works</a>
+          <span aria-hidden="true">·</span>
+          <a routerLink="/cameras" class="hero__text-link">View cameras</a>
+        </div>
+      </div>
+
+      <div class="hero__product reveal reveal-delay-2" role="search" aria-label="Start a booking">
+        <div class="hero__glow" aria-hidden="true"></div>
+        <div class="book-card">
+          <div class="book-card__head">
+            <h2 class="book-card__title">Start booking</h2>
+            <p class="book-card__sub">Any event or party — pick type, place, and time.</p>
+          </div>
+
+          <div class="book-card__fields">
+            <div class="book-card__field">
+              <app-bmc-select
+                label="Shoot type"
+                placeholder="Choose shoot type"
+                [options]="shootSelectOptions"
+                [(ngModel)]="quickShoot"
+                name="shoot"
+                ariaLabel="Shoot type"
+              />
+            </div>
+            <div class="book-card__field">
+              <app-bmc-select
+                label="Location"
+                placeholder="Choose location"
+                [options]="locationSelectOptions"
+                [(ngModel)]="quickLocation"
+                name="location"
+                ariaLabel="Location"
+              />
+            </div>
+            <div class="book-card__field">
+              <app-bmc-select
+                label="When"
+                placeholder="Choose timing"
+                [options]="whenSelectOptions"
+                [(ngModel)]="quickWhen"
+                name="when"
+                ariaLabel="When"
+              />
+            </div>
+          </div>
+
+          <div class="book-card__duration">
+            <p class="book-card__duration-label">Duration</p>
+            <div class="book-card__picks" role="group" aria-label="Shoot duration">
+              @for (pick of durationPicks; track pick.value) {
+                <button
+                  type="button"
+                  class="book-card__pick"
+                  [class.is-active]="quickDuration === pick.value"
+                  (click)="setDuration(pick.value)"
+                >
+                  {{ pick.label }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <a
+            routerLink="/book"
+            class="book-card__cta"
+            [queryParams]="bookQueryParams"
+          >
+            Book now
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+
+          <p class="book-card__fine">
+            *As little as 90 minutes, subject to availability and location.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <figure class="hero__backdrop" aria-hidden="true">
+      <img
+        [src]="heroPhoto"
+        alt=""
+        width="1400"
+        height="900"
+        fetchpriority="high"
+      />
+    </figure>
+  </section>
+
+  <!-- 2. TRUST / OPS STRIP -->
+  <section class="ops" aria-label="Network status">
+    <div class="container--wide ops__inner">
+      @for (metric of opsMetrics; track metric.label) {
+        <div class="ops__item reveal">
+          <p class="ops__value">{{ metric.value }}</p>
+          <p class="ops__label">{{ metric.label }}</p>
+          @if (metric.note) {
+            <p class="ops__note">{{ metric.note }}</p>
+          }
+        </div>
+      }
+    </div>
+    <p class="ops__disclaimer container--wide">
+      Demo metrics for product illustration. Dispatch times vary — as little as 90 minutes, subject to availability.
+    </p>
+  </section>
+
+  <!-- 3. SHOOT CATEGORIES -->
+  <section class="cats bmc-section" aria-labelledby="cats-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow reveal">Browse by shoot</p>
+          <h2 id="cats-heading" class="sec-title reveal">Shoot categories</h2>
+          <p class="sec-lede reveal">
+            Marketplace-style categories with clear use cases. Book any type in one tap.
+          </p>
+        </div>
+        <a routerLink="/services" class="sec-link reveal">All services →</a>
+      </header>
+
+      <div class="cats__grid">
+        @for (cat of shootCategories; track cat.slug) {
+          <article class="cat-card reveal">
+            <a [routerLink]="['/services', cat.slug]" class="cat-card__media">
+              <img
+                [src]="cat.image"
+                [alt]="cat.title + ' photography'"
+                width="640"
+                height="480"
+                loading="lazy"
+              />
+            </a>
+            <div class="cat-card__body">
+              <h3>{{ cat.title }}</h3>
+              <p>{{ cat.useCases }}</p>
+              <div class="cat-card__actions">
+                <a
+                  class="cat-card__book"
+                  routerLink="/book"
+                  [queryParams]="{ type: cat.type }"
+                >
+                  Book →
+                </a>
+                <a [routerLink]="['/services', cat.slug]" class="cat-card__more">Details</a>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. HOW IT WORKS -->
+  <section class="how bmc-section" aria-labelledby="how-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow reveal">Operations</p>
+          <h2 id="how-heading" class="sec-title reveal">How it works</h2>
+          <p class="sec-lede reveal">
+            Five operational steps from request to digital delivery.
+          </p>
+        </div>
+        <a routerLink="/book" class="bmc-btn bmc-btn--primary reveal">Start booking</a>
+      </header>
+
+      <ol class="how__grid">
+        @for (step of howSteps; track step.num) {
+          <li class="how__step reveal">
+            <span class="how__num">{{ step.num }}</span>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.body }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. CAMERA INVENTORY -->
+  <section class="cams bmc-section" aria-labelledby="cams-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow">Inventory</p>
+          <h2 id="cams-heading" class="sec-title">Choose your camera</h2>
+          <p class="sec-lede">
+            Pro cinema and mirrorless bodies in our network. Book with a specific model or let us match.
+          </p>
+        </div>
+        <a routerLink="/cameras" class="sec-link">View full catalogue →</a>
+      </header>
+    </div>
+
+    @if (camerasLoading()) {
+      <p class="bmc-state" role="status">Loading cameras…</p>
+    } @else if (camerasError()) {
+      <p class="bmc-state bmc-state--error" role="alert">{{ camerasError() }}</p>
+    } @else if (cameras().length === 0) {
+      <p class="bmc-state" role="status">No cameras available right now.</p>
+    } @else {
+      <div class="cams__rail bmc-rail container--wide" tabindex="0" aria-label="Camera inventory">
+        @for (cam of cameras(); track cam.id) {
+          <article class="cam-card">
+            <div class="cam-card__top">
+              <p class="cam-card__brand">{{ cam.brand }}</p>
+              <p class="cam-card__cat">{{ cam.rating.toFixed(1) }} ★ · {{ cam.reviews }}</p>
+            </div>
+            <h3 class="cam-card__model">{{ cam.model }}</h3>
+            <div class="cam-card__media">
+              <img
+                [src]="cam.image"
+                [alt]="cam.model"
+                width="640"
+                height="480"
+                loading="lazy"
+              />
+            </div>
+            <p class="cam-card__price">
+              <span class="cam-card__price-now">₹{{ cam.price }}</span>
+              @if (cam.originalPrice > cam.price) {
+                <span class="cam-card__price-was">₹{{ cam.originalPrice }}</span>
+              }
+            </p>
+            <ul class="cam-card__tags" aria-label="Features">
+              @for (feature of cam.features.slice(0, 2); track feature) {
+                <li>{{ feature }}</li>
+              }
+            </ul>
+            <a
+              class="cam-card__cta"
+              routerLink="/book"
+              [queryParams]="{ camera: cam.slug }"
+            >
+              Book with {{ cam.model }} →
+            </a>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- 6. PHOTOGRAPHER NETWORK -->
+  <section class="talent bmc-section" aria-labelledby="talent-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow">Network</p>
+          <h2 id="talent-heading" class="sec-title">Available talent</h2>
+          <p class="sec-lede">
+            Vetted professionals matched to your shoot type and location.
+          </p>
+        </div>
+        <a routerLink="/photographers" class="sec-link">Browse photographers →</a>
+      </header>
+
+      @if (photographersLoading()) {
+        <p class="bmc-state" role="status">Loading photographers…</p>
+      } @else if (photographersError()) {
+        <p class="bmc-state bmc-state--error" role="alert">{{ photographersError() }}</p>
+      } @else if (photographers().length === 0) {
+        <p class="bmc-state" role="status">No photographers listed right now.</p>
+      } @else {
+        <div class="talent__grid">
+          @for (ph of photographers(); track ph.id) {
+            <article class="talent-card">
+              <a [routerLink]="['/photographers', ph.slug]" class="talent-card__media">
+                <img [src]="ph.image" [alt]="ph.name" width="480" height="600" loading="lazy" />
+                @if (ph.availableToday) {
+                  <span class="talent-card__badge">Available today</span>
+                }
+              </a>
+              <div class="talent-card__body">
+                <h3>{{ ph.name }}</h3>
+                <p class="talent-card__specs">
+                  @for (s of ph.specialities; track s; let last = $last) {
+                    <span>{{ s }}{{ last ? '' : ' · ' }}</span>
+                  }
+                </p>
+                <p class="talent-card__stats">
+                  {{ ph.rating.toFixed(1) }} ★ · {{ ph.shoots }}+ shoots · {{ ph.location }}
+                </p>
+                <div class="talent-card__actions">
+                  <a [routerLink]="['/photographers', ph.slug]" class="talent-card__view">View</a>
+                  <a
+                    routerLink="/book"
+                    class="talent-card__book"
+                    [queryParams]="{ photographer: ph.slug }"
+                  >
+                    Book
+                  </a>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      }
+
+      <p class="talent__disclaimer reveal">
+        Demo talent profiles — illustrative of matching, not live calendar availability.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7. WHY / VALUE -->
+  <section class="value bmc-section" aria-labelledby="value-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow reveal">Why BookMyCamera</p>
+          <h2 id="value-heading" class="sec-title reveal">Built for booking, not browsing</h2>
+          <p class="sec-lede reveal">
+            Concrete product benefits — dispatch, gear, flow, and delivery.
+          </p>
+        </div>
+      </header>
+
+      <div class="value__grid">
+        @for (point of valuePoints; track point.title; let i = $index) {
+          <article class="value-card reveal">
+            <span class="value-card__num">0{{ i + 1 }}</span>
+            <h3>{{ point.title }}</h3>
+            <p>{{ point.body }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. PRICING TEASER -->
+  <section class="pricing bmc-section" aria-labelledby="pricing-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow reveal">Pricing</p>
+          <h2 id="pricing-heading" class="sec-title reveal">Simple plan starting points</h2>
+          <p class="sec-lede reveal">
+            Indicative ranges — confirm final quote on booking. Full details on pricing.
+          </p>
+        </div>
+        <a routerLink="/pricing" class="sec-link reveal">View pricing →</a>
+      </header>
+
+      <div class="pricing__grid">
+        @for (plan of pricingPlans; track plan.name) {
+          <article class="price-card reveal">
+            <div class="price-card__top">
+              <h3>{{ plan.name }}</h3>
+              <p class="price-card__duration">{{ plan.duration }}</p>
+            </div>
+            <p class="price-card__summary">{{ plan.summary }}</p>
+            <p class="price-card__price">{{ plan.priceLabel }}</p>
+            <a
+              routerLink="/book"
+              class="bmc-btn bmc-btn--primary price-card__cta"
+              [queryParams]="{ type: plan.typeParam }"
+            >
+              Book now
+            </a>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. SHOTS GRID — credited work samples -->
+  <section class="shots bmc-section" aria-labelledby="shots-heading">
+    <div class="container--wide">
+      <header class="sec-head">
+        <div>
+          <p class="bmc-eyebrow">Real shoots. Real gear.</p>
+          <h2 id="shots-heading" class="sec-title">Work from the network</h2>
+          <p class="sec-lede">
+            Parties, portraits, plates, products — every frame shot by a BookMyCamera
+            photographer with a pro body in hand.
+          </p>
+        </div>
+        <a routerLink="/book" class="bmc-btn bmc-btn--secondary">Book your shoot</a>
+      </header>
+
+      <div class="shots__grid" aria-label="Sample shots from the network">
+        @for (shot of featuredShots; track shot.id; let i = $index) {
+          <figure
+            class="shots__card"
+            [style.--shot-delay]="i * 60 + 'ms'"
+          >
+            <div class="shots__media">
+              <img
+                [src]="shot.image"
+                [alt]="shot.alt"
+                width="640"
+                height="640"
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="shots__credit">
+              <span class="shots__by">Shot by {{ shot.photographer }}</span>
+              <span class="shots__cam">with his {{ shot.camera }}</span>
+            </figcaption>
+          </figure>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FINAL CONVERSION -->
+  <section class="end" aria-labelledby="end-heading">
+    <div class="container end__inner reveal">
+      <p class="bmc-eyebrow">Ready when you are</p>
+      <h2 id="end-heading" class="end__title">Any event. We’ll be there.</h2>
+      <p class="end__lede">
+        Book a photographer hassle free — parties, launches, weekends, or last-minute
+        express. Camera included.
+      </p>
+      <div class="end__actions">
+        <a routerLink="/book" class="bmc-btn bmc-btn--primary bmc-btn--lg">Book a shoot</a>
+        <a routerLink="/contact" class="bmc-btn bmc-btn--secondary">Talk to team</a>
+      </div>
+    </div>
+  </section>
+
+  <a routerLink="/book" class="bmc-sticky-book">Book a shoot</a>
+</div>

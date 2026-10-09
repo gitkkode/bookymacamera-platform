@@ -1,0 +1,39 @@
+<footer class="foot">
+  <div class="foot__top container--wide">
+    <div class="foot__brand">
+      <p class="foot__logo">BOOKMYCAMERA</p>
+      <p class="foot__tag">Professional photography. On demand.</p>
+      <a routerLink="/book" class="bmc-btn bmc-btn--primary">Book a Shoot</a>
+    </div>
+
+    <div class="foot__cols">
+      <div>
+        <p class="bmc-eyebrow">Explore</p>
+        <ul>
+          @for (link of links; track link.path) {
+            <li><a [routerLink]="link.path">{{ link.label }}</a></li>
+          }
+        </ul>
+      </div>
+      <div>
+        <p class="bmc-eyebrow">Legal</p>
+        <ul>
+          @for (link of legal; track link.path) {
+            <li><a [routerLink]="link.path">{{ link.label }}</a></li>
+          }
+        </ul>
+        <p class="bmc-eyebrow foot__social-label">Social</p>
+        <ul class="foot__social">
+          <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot__bottom container--wide">
+    <p>© {{ year }} BookMyCamera</p>
+    <p>Dispatch in as little as 90 minutes, subject to availability and location.</p>
+  </div>
+</footer>

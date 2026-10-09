@@ -1,0 +1,76 @@
+<div class="bmc-select" [class.is-open]="open()">
+  @if (label()) {
+    <span class="bmc-select__label" id="bmc-select-label">{{ label() }}</span>
+  }
+
+  <button
+    type="button"
+    class="bmc-select__trigger"
+    [attr.aria-label]="ariaLabel() || label() || placeholder()"
+    [attr.aria-expanded]="open()"
+    [attr.aria-haspopup]="'listbox'"
+    [attr.aria-controls]="'bmc-select-list'"
+    [disabled]="disabled()"
+    (click)="toggle()"
+    (keydown)="onTriggerKeydown($event)"
+  >
+    <span class="bmc-select__value" [class.is-placeholder]="!hasValue()">
+      {{ selectedLabel() }}
+    </span>
+    <span class="bmc-select__chevron" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M6 9l6 6 6-6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+  </button>
+
+  @if (open()) {
+    <ul
+      id="bmc-select-list"
+      class="bmc-select__menu"
+      role="listbox"
+      [attr.aria-label]="ariaLabel() || label() || 'Options'"
+    >
+      @for (opt of options(); track opt.value; let i = $index) {
+        <li role="presentation">
+          <button
+            type="button"
+            class="bmc-select__option"
+            role="option"
+            [class.is-active]="activeIndex() === i"
+            [class.is-selected]="value() === opt.value"
+            [attr.aria-selected]="value() === opt.value"
+            (click)="select(opt)"
+            (mouseenter)="activeIndex.set(i)"
+          >
+            <span class="bmc-select__option-main">
+              <span class="bmc-select__option-label">{{ opt.label }}</span>
+              @if (opt.hint) {
+                <span class="bmc-select__option-hint">{{ opt.hint }}</span>
+              }
+            </span>
+            @if (value() === opt.value) {
+              <span class="bmc-select__check" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 12l5 5L20 7"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            }
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>
