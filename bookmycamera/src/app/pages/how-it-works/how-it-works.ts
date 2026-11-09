@@ -31,7 +31,7 @@ export class HowItWorks implements OnInit {
     {
       key: 'BOOK',
       title: 'Tell us the shoot',
-      body: 'Shoot type, location, timing, and any camera preference. Keep the brief short — we fill in the gaps.',
+      body: 'Shoot type, location, timing, and any camera preference. Keep the brief short and we fill in the gaps.',
     },
     {
       key: 'MATCH',
@@ -46,12 +46,12 @@ export class HowItWorks implements OnInit {
     {
       key: 'SHOOT',
       title: 'We shoot',
-      body: 'On location with professional kit — lighting, direction, and frames built for how you will actually use them.',
+      body: 'On location with professional kit, with lighting, direction, and frames built for how you will actually use them.',
     },
     {
       key: 'DELIVER',
       title: 'You get the frames',
-      body: 'Curated digital delivery after the shoot — ready for menus, campaigns, listings, and feeds.',
+      body: 'Curated digital delivery after the shoot, ready for menus, campaigns, listings, and feeds.',
     },
   ];
 
@@ -66,7 +66,7 @@ export class HowItWorks implements OnInit {
     },
     {
       q: 'Can I choose a photographer?',
-      a: 'Yes — you can request a photographer when available, or let us match someone suited to your shoot type and location.',
+      a: 'Yes. You can request a photographer when available, or let us match someone suited to your shoot type and location.',
     },
     {
       q: 'Can I choose a camera?',
@@ -78,7 +78,7 @@ export class HowItWorks implements OnInit {
     },
     {
       q: 'Can I book an event?',
-      a: 'Yes. Event coverage is a core service — launches, conferences, parties, and brand activations. Book Event or Custom for longer coverage.',
+      a: 'Yes. Event coverage is a core service, covering launches, conferences, parties, and brand activations. Book Event or Custom for longer coverage.',
     },
     {
       q: 'How are photos delivered?',
@@ -86,7 +86,7 @@ export class HowItWorks implements OnInit {
     },
     {
       q: 'Can I request edits?',
-      a: 'Basic colour correction and select retouching are common. Heavier retouching or additional rounds can be scoped — note it in your brief or contact the team.',
+      a: 'Basic colour correction and select retouching are common. Heavier retouching or additional rounds can be scoped, so note it in your brief or contact the team.',
     },
     {
       q: 'What happens if my photographer is unavailable?',
@@ -98,7 +98,7 @@ export class HowItWorks implements OnInit {
     this.seo.setPage({
       title: 'How It Works',
       description:
-        'Book → Match → Dispatch → Shoot → Deliver. BookMyCamera pairs a professional photographer with a professional camera — dispatch in as little as 90 minutes, subject to availability.',
+        'Book, match, dispatch, shoot and deliver. BookMyCamera pairs a professional photographer with a professional camera, with dispatch in as little as 90 minutes, subject to availability.',
       path: '/how-it-works',
     });
   }

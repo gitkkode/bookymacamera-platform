@@ -18,7 +18,7 @@ export class Footer {
 
   readonly links: FooterLink[] = [
     { label: 'Book a Shoot', path: '/book' },
-    { label: 'Cameras', path: '/cameras' },
+    { label: 'Gear', path: '/cameras' },
     { label: 'Photographers', path: '/photographers' },
     { label: 'Services', path: '/services' },
     { label: 'How It Works', path: '/how-it-works' },

@@ -1,0 +1,40 @@
+---
+description: User-facing copy must not use dashes, dots or arrows as separators inside sentences
+alwaysApply: true
+---
+
+# No separator symbols in user-facing copy
+
+Applies to every visible string: templates, UI labels, data files (`mock-data.ts`,
+`photographers.json`, page `.ts` arrays), SEO titles and descriptions.
+
+Never use these as separators inside text:
+
+- Em dash `—` and en dash `–`
+- Middle dot `·` or bullet `•` between words or values
+- Arrow chains like `Book → Match → Deliver`
+- Slashes as "or", like `Custom / corporate`
+
+Use normal punctuation instead: a period, a comma, a colon, or the words
+"and", "or", "to", "in", "with".
+
+```text
+❌ Any event or party — pick type, place, and time.
+✅ Any event or party. Pick type, place, and time.
+
+❌ Menus · restaurants · delivery apps
+✅ Menus, restaurants and delivery apps
+
+❌ 2–4 hours          ✅ 2 to 4 hours
+❌ Sony · Lenses      ✅ Sony in Lenses   (or two separately styled elements)
+❌ BookMyCamera — Pro Photography   ✅ BookMyCamera: Pro Photography
+```
+
+When UI needs to show several short values side by side (brand and category,
+specs), render them as separate elements spaced with CSS `gap` instead of
+joining them with a symbol. Do not add symbols through CSS `content` either.
+
+Allowed: `₹`, `%`, `★` for ratings, and a single trailing arrow icon on a link
+or button label (for example "View pricing →").
+
+Placeholders for empty values use words ("Not set"), never a dash.

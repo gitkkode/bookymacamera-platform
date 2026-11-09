@@ -39,7 +39,7 @@ export class Legal implements OnInit {
       kind: 'privacy',
       title: 'Privacy Policy',
       description:
-        'How BookMyCamera collects and uses information when you browse, book, or contact us. Placeholder policy — not legal advice.',
+        'How BookMyCamera collects and uses information when you browse, book, or contact us. Placeholder policy, not legal advice.',
       path: '/privacy',
       updated: 'September 2026',
       sections: [
@@ -53,7 +53,7 @@ export class Legal implements OnInit {
         {
           heading: 'Information we may collect',
           paragraphs: [
-            'Contact and booking details you submit — such as name, email, phone, location, shoot preferences, and message content.',
+            'Contact and booking details you submit, such as name, email, phone, location, shoot preferences, and message content.',
             'Technical data such as device type, browser, approximate location derived from IP, and usage analytics that help us keep the site reliable.',
           ],
         },
@@ -84,7 +84,7 @@ export class Legal implements OnInit {
       kind: 'terms',
       title: 'Terms of Service',
       description:
-        'Terms governing use of the BookMyCamera website and booking experience. Placeholder terms — not legal advice.',
+        'Terms governing use of the BookMyCamera website and booking experience. Placeholder terms, not legal advice.',
       path: '/terms',
       updated: 'September 2026',
       sections: [
@@ -98,7 +98,7 @@ export class Legal implements OnInit {
           heading: 'The service',
           paragraphs: [
             'BookMyCamera helps customers request professional photography with a professional camera. Matching, dispatch timing, and availability depend on location, inventory, and partner capacity.',
-            'Statements such as “dispatch in as little as 90 minutes” describe an operational goal subject to availability and location — not a guaranteed arrival time unless expressly confirmed for a specific booking.',
+            'Statements such as “dispatch in as little as 90 minutes” describe an operational goal subject to availability and location, not a guaranteed arrival time unless expressly confirmed for a specific booking.',
           ],
         },
         {
@@ -127,7 +127,7 @@ export class Legal implements OnInit {
       kind: 'cancellation',
       title: 'Cancellation Policy',
       description:
-        'How cancellations and changes work for BookMyCamera shoots. Placeholder policy — not legal advice.',
+        'How cancellations and changes work for BookMyCamera shoots. Placeholder policy, not legal advice.',
       path: '/cancellation',
       updated: 'September 2026',
       sections: [

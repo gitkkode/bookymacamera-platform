@@ -5,21 +5,59 @@
   z-index: var(--bmc-z-nav);
 }
 
+:host(.is-overlay) {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+
 .nav {
-  background: rgba(250, 247, 242, 0.92);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  border-bottom: 1px solid var(--bmc-line);
+  background: transparent;
+  border-bottom: 1px solid transparent;
   transition:
     background var(--bmc-duration) var(--bmc-ease),
     border-color var(--bmc-duration) var(--bmc-ease),
     box-shadow var(--bmc-duration) var(--bmc-ease);
 }
 
-.nav--scrolled {
-  background: rgba(255, 255, 255, 0.96);
+.nav--scrolled,
+.nav--open {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
   border-bottom-color: var(--bmc-line);
   box-shadow: var(--bmc-shadow-sm);
+}
+
+/* Transparent over the dark home hero */
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__logo,
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__center a {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__logo {
+  color: #fff;
+}
+
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__center a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__center a.is-active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__toggle span,
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__toggle span::before,
+:host(.is-overlay) .nav:not(.nav--scrolled):not(.nav--open) .nav__toggle span::after {
+  background: #fff;
 }
 
 .nav__inner {

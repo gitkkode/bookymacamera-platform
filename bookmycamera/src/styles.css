@@ -179,6 +179,20 @@ p {
   outline-offset: 3px;
 }
 
+/* Rupee sign set apart from tightly tracked display numbers */
+.inr {
+  display: inline-block;
+  margin-right: 0.12em;
+  letter-spacing: 0;
+  font-size: 0.82em;
+  font-weight: inherit;
+  vertical-align: 0.04em;
+}
+
+.bmc-scroll-lock {
+  overflow: hidden;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -452,23 +466,37 @@ p {
 /* --------------------------------------------------------------------------
    Reveal / motion
    -------------------------------------------------------------------------- */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity var(--bmc-duration-slow) var(--bmc-ease),
-    transform var(--bmc-duration-slow) var(--bmc-ease);
+/* Content is always visible by default; the fade-in is a pure-CSS, scroll-driven
+   enhancement so nothing can stay hidden if JS, HMR or an observer misses a node. */
+@keyframes bmc-reveal {
+  from {
+    opacity: 0;
+    translate: 0 28px;
+  }
 }
 
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: bmc-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
 }
 
-.reveal-delay-1 { transition-delay: 80ms; }
-.reveal-delay-2 { transition-delay: 160ms; }
-.reveal-delay-3 { transition-delay: 240ms; }
-.reveal-delay-4 { transition-delay: 320ms; }
+.reveal-delay-1 { --reveal-delay: 80ms; }
+.reveal-delay-2 { --reveal-delay: 160ms; }
+.reveal-delay-3 { --reveal-delay: 240ms; }
+.reveal-delay-4 { --reveal-delay: 320ms; }
+
+/* Above-the-fold intro: time-based so it plays on load */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal[class*='reveal-delay-'] {
+    animation: bmc-reveal 0.8s var(--bmc-ease) var(--reveal-delay, 0ms) both;
+    animation-timeline: auto;
+  }
+}
 
 /* --------------------------------------------------------------------------
    States

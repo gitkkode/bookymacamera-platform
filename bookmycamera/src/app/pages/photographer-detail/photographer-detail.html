@@ -55,7 +55,7 @@
             <h1 class="profile-title">{{ ph.name }}</h1>
             <p class="profile-specs">
               @for (s of ph.specialities; track s; let last = $last) {
-                <span>{{ s }}{{ last ? '' : ' · ' }}</span>
+                <span>{{ s }}{{ last ? '' : ', ' }}</span>
               }
             </p>
             <p class="profile-stats">
@@ -92,7 +92,7 @@
           <div class="book-card">
             <p class="book-card__label">Book this photographer</p>
             <p class="book-card__name">{{ ph.name }}</p>
-            <p class="book-card__meta">{{ ph.location }} · {{ ph.rating.toFixed(1) }} ★</p>
+            <p class="book-card__meta">{{ ph.location }}, {{ ph.rating.toFixed(1) }} ★</p>
             @if (ph.availableToday) {
               <p class="book-card__badge">Available today</p>
             }

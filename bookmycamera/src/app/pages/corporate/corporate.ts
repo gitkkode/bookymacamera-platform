@@ -26,7 +26,7 @@ export class Corporate implements OnInit {
   readonly solutions = [
     {
       title: 'One-off shoot',
-      body: 'Launch creatives, menu refreshes, founder portraits — booked when you need them.',
+      body: 'Launch creatives, menu refreshes, founder portraits, booked when you need them.',
     },
     {
       title: 'Monthly content',

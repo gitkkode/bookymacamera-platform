@@ -1,0 +1,47 @@
+@let g = item();
+<button type="button" class="gc" (click)="opened.emit(g)" [attr.aria-label]="'View ' + g.name">
+  <span class="gc__head">
+    <span class="gc__brand">{{ g.group }}</span>
+    @if (showCategory()) {
+      <span class="gc__cat">{{ g.categoryLabel }}</span>
+    }
+    <span class="gc__rate" [attr.aria-label]="'Rated ' + g.rating.toFixed(1)">
+      <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+        <path fill="currentColor" d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" />
+      </svg>
+      {{ g.rating.toFixed(1) }}
+    </span>
+  </span>
+
+  <span class="gc__media">
+    <img [src]="g.image" [alt]="g.name" width="320" height="240" loading="lazy" decoding="async" />
+  </span>
+
+  <span class="gc__name">{{ g.name }}</span>
+
+  @if (g.specifications.length) {
+    <span class="gc__specs">
+      @for (spec of g.specifications.slice(0, 2); track spec.label) {
+        <span>{{ spec.value }}</span>
+      }
+    </span>
+  }
+
+  <span class="gc__foot">
+    <span class="gc__price">
+      <strong><span class="inr">₹</span>{{ g.price | number }}</strong>
+      <small>per day</small>
+    </span>
+    @if (g.discount) {
+      <span class="gc__deal">
+        <s>₹{{ g.originalPrice | number }}</s>
+        <em>{{ g.discount }}% off</em>
+      </span>
+    }
+    <span class="gc__go" aria-hidden="true">
+      <span>View</span>
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </span>
+  </span>
+</button>

@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay, map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable, map, shareReplay } from 'rxjs';
 
-import { PHOTOGRAPHERS } from '../data/mock-data';
 import type { Photographer } from '../models';
+
+const PHOTOGRAPHERS_URL = '/mock/photographers.json';
 
 export interface PhotographerFilter {
   location?: string | null;
@@ -13,33 +15,32 @@ export interface PhotographerFilter {
 
 @Injectable({ providedIn: 'root' })
 export class PhotographerService {
-  private readonly apiDelayMs = 350;
+  private readonly http = inject(HttpClient);
+
+  private readonly photographers$ = this.http
+    .get<Photographer[]>(PHOTOGRAPHERS_URL)
+    .pipe(shareReplay({ bufferSize: 1, refCount: false }));
 
   getAll(): Observable<Photographer[]> {
-    return of([...PHOTOGRAPHERS]).pipe(delay(this.apiDelayMs));
+    return this.photographers$.pipe(map((list) => [...list]));
   }
 
   getById(id: string): Observable<Photographer | null> {
     const normalized = id?.trim() ?? '';
-    return of(PHOTOGRAPHERS).pipe(
-      delay(this.apiDelayMs),
+    return this.photographers$.pipe(
       map((list) => list.find((p) => p.id === normalized) ?? null),
     );
   }
 
   getBySlug(slug: string): Observable<Photographer | null> {
     const normalized = slug?.trim().toLowerCase() ?? '';
-    return of(PHOTOGRAPHERS).pipe(
-      delay(this.apiDelayMs),
+    return this.photographers$.pipe(
       map((list) => list.find((p) => p.slug === normalized) ?? null),
     );
   }
 
   filter(filters: PhotographerFilter = {}): Observable<Photographer[]> {
-    return of(PHOTOGRAPHERS).pipe(
-      delay(this.apiDelayMs),
-      map((list) => this.applyFilters(list, filters)),
-    );
+    return this.photographers$.pipe(map((list) => this.applyFilters(list, filters)));
   }
 
   private applyFilters(

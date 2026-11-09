@@ -13,7 +13,7 @@ export class SeoService {
   private readonly meta = inject(Meta);
 
   private readonly siteName = 'BookMyCamera';
-  private readonly defaultTitle = 'BookMyCamera — Professional Photography On Demand';
+  private readonly defaultTitle = 'BookMyCamera: Professional Photography On Demand';
 
   setPage({ title, description, path }: PageSeoInput): void {
     const fullTitle = title.includes(this.siteName) ? title : `${title} | ${this.siteName}`;

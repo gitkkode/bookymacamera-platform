@@ -25,6 +25,49 @@ export type ContactEnquiryType =
   | 'partnership'
   | 'support';
 
+export interface GearSpec {
+  label: string;
+  value: string;
+}
+
+/** Any rentable product from the catalogue (camera, lens, light, audio…). */
+export interface GearItem {
+  /** Unique key — source ids are not unique across categories. */
+  key: string;
+  sourceId: number;
+  slug: string;
+  categoryKey: string;
+  categoryLabel: string;
+  /** Brand when known, otherwise a product-type group (e.g. "Flags & cutters"). */
+  group: string;
+  groupSlug: string;
+  isBrand: boolean;
+  name: string;
+  image: string;
+  price: number;
+  originalPrice: number;
+  discount: number;
+  rating: number;
+  reviews: number;
+  /** Null when the source only has the generic "contact us" placeholder. */
+  shortDescription: string | null;
+  description: string;
+  features: string[];
+  specifications: GearSpec[];
+}
+
+export interface GearCategory {
+  key: string;
+  label: string;
+  blurb: string;
+  /** SVG path data for a 24×24 stroke icon. */
+  icon: string;
+  count: number;
+  groups: { slug: string; label: string; count: number; isBrand: boolean }[];
+  /** A representative product image for the category. */
+  cover: string;
+}
+
 export interface Camera {
   id: string;
   slug: string;
@@ -101,7 +144,10 @@ export interface BookingState {
   address: string;
   urgency: BookingUrgency | null;
   date: string;
+  /** Start time, HH:MM. */
   time: string;
+  /** End time, HH:MM. Only used for scheduled bookings. */
+  endTime: string;
   cameraId: string | null;
   cameraChoice: CameraChoice | null;
   durationHours: number | null;

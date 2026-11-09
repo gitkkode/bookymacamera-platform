@@ -19,6 +19,7 @@ const INITIAL_STATE: BookingState = {
   urgency: null,
   date: '',
   time: '',
+  endTime: '',
   cameraId: null,
   cameraChoice: null,
   durationHours: null,
@@ -39,6 +40,11 @@ export class BookingService {
   readonly canProceed = computed(() => this.isStepValid(this._currentStep(), this._state()));
 
   readonly canGoPrev = computed(() => this._currentStep() > 1);
+
+  /** Whether a given step's requirements are met with the current state. */
+  isStepFilled(step: number): boolean {
+    return this.isStepValid(step, this._state());
+  }
 
   readonly isLastStep = computed(() => this._currentStep() >= TOTAL_STEPS);
 
@@ -74,8 +80,12 @@ export class BookingService {
     this.patch({ time });
   }
 
+  updateEndTime(endTime: string): void {
+    this.patch({ endTime });
+  }
+
   updateWhen(
-    partial: Pick<BookingState, 'urgency' | 'date' | 'time'>,
+    partial: Partial<Pick<BookingState, 'urgency' | 'date' | 'time' | 'endTime'>>,
   ): void {
     this.patch(partial);
   }
@@ -171,7 +181,12 @@ export class BookingService {
           return true;
         }
         if (state.urgency === 'scheduled') {
-          return state.date.trim().length > 0 && state.time.trim().length > 0;
+          return (
+            state.date.trim().length > 0 &&
+            state.time.trim().length > 0 &&
+            state.endTime.trim().length > 0 &&
+            state.endTime > state.time
+          );
         }
         return false;
       case 4:

@@ -25,7 +25,7 @@ export class About implements OnInit {
     this.seo.setPage({
       title: 'About BookMyCamera',
       description:
-        'We believe getting great photos should be easy. Tell us what you need — BookMyCamera gets the right professional to you.',
+        'We believe getting great photos should be easy. Tell us what you need and BookMyCamera gets the right professional to you.',
       path: '/about',
     });
   }

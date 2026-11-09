@@ -57,7 +57,7 @@ export class Contact implements OnInit {
     },
     {
       title: 'Photographer',
-      body: 'Join the network — tell us your specialities and cities.',
+      body: 'Join the network. Tell us your specialities and cities.',
       type: 'photographer' as ContactEnquiryType,
     },
     {
@@ -81,11 +81,18 @@ export class Contact implements OnInit {
     this.seo.setPage({
       title: 'Contact',
       description:
-        'Call, WhatsApp, or email BookMyCamera. Send a business, photographer, or corporate enquiry — or book a shoot.',
+        'Call, WhatsApp, or email BookMyCamera. Send a business, photographer, or corporate enquiry, or book a shoot.',
       path: '/contact',
     });
 
     this.route.queryParamMap.subscribe((params) => {
+      const gear = (params.get('gear') ?? '').trim();
+      if (gear && !this.form.controls.message.value) {
+        this.form.controls.message.setValue(
+          `Hi, I'd like to rent the ${gear}. Dates and location: `,
+        );
+      }
+
       const raw = (params.get('type') ?? '').trim().toLowerCase();
       if (!raw) {
         return;

@@ -1,0 +1,43 @@
+<button
+  #trigger
+  type="button"
+  class="sm__trigger"
+  [class.is-open]="open()"
+  aria-haspopup="listbox"
+  [attr.aria-expanded]="open()"
+  aria-controls="sm-list"
+  [attr.aria-activedescendant]="open() ? 'sm-opt-' + active() : null"
+  (click)="toggle()"
+  (keydown)="onKeydown($event)"
+>
+  <svg class="sm__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M4 6h16M7 12h10M10 18h4" />
+  </svg>
+  <span class="sm__label">Sort</span>
+  <span class="sm__value">{{ current().label }}</span>
+  <svg class="sm__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+</button>
+
+@if (open()) {
+  <ul class="sm__menu" id="sm-list" role="listbox" aria-label="Sort products">
+    @for (opt of options(); track opt.value; let i = $index) {
+      <li
+        role="option"
+        class="sm__opt"
+        [id]="'sm-opt-' + i"
+        [class.is-active]="i === active()"
+        [class.is-selected]="opt.value === value()"
+        [attr.aria-selected]="opt.value === value()"
+        (mouseenter)="active.set(i)"
+        (click)="pick(opt)"
+      >
+        <span class="sm__radio" aria-hidden="true"></span>
+        {{ opt.label }}
+      </li>
+    }
+  </ul>
+}

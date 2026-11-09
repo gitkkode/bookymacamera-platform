@@ -1,0 +1,117 @@
+<div class="gs" [class.is-open]="open()">
+  <label class="gs__field">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" />
+    </svg>
+    <span class="sr-only">Search gear</span>
+    <input
+      #field
+      type="text"
+      role="combobox"
+      aria-autocomplete="list"
+      aria-controls="gs-panel"
+      [attr.aria-expanded]="open()"
+      [attr.aria-activedescendant]="activeId()"
+      placeholder="Search cameras, lenses, lights, brands…"
+      autocomplete="off"
+      spellcheck="false"
+      [value]="text()"
+      (input)="onInput($any($event.target).value)"
+      (focus)="open.set(true)"
+      (keydown)="onKeydown($event)"
+    />
+    @if (text()) {
+      <button type="button" class="gs__clear" (click)="clear()" aria-label="Clear search">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"
+             stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    } @else {
+      <kbd class="gs__kbd" aria-hidden="true">/</kbd>
+    }
+  </label>
+
+  @if (open()) {
+    <div class="gs__panel" id="gs-panel" role="listbox" aria-label="Search suggestions">
+      @if (!text().trim()) {
+        <p class="gs__label">Popular searches</p>
+        <div class="gs__popular">
+          @for (term of popular; track term) {
+            <button type="button" class="gs__pop" (click)="usePopular(term)">{{ term }}</button>
+          }
+        </div>
+      } @else {
+        @if (groupOptions().length) {
+          <p class="gs__label">Brands &amp; categories</p>
+          @for (opt of groupOptions(); track opt.id) {
+            <button
+              type="button"
+              role="option"
+              class="gs__opt gs__opt--group"
+              [id]="'gs-' + opt.id"
+              [class.is-active]="indexOf(opt.id) === active()"
+              [attr.aria-selected]="indexOf(opt.id) === active()"
+              (mouseenter)="active.set(indexOf(opt.id))"
+              (click)="choose(opt)"
+            >
+              <span class="gs__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" /></svg>
+              </span>
+              <span class="gs__text">
+                <b>
+                  @for (p of parts(opt.label); track $index) {<span [class.gs__hit]="p.match">{{ p.text }}</span>}
+                </b>
+                <small>{{ opt.context }}</small>
+              </span>
+              <span class="gs__count">{{ opt.count }}</span>
+            </button>
+          }
+        }
+
+        @if (itemOptions().length) {
+          <p class="gs__label">Products</p>
+          @for (opt of itemOptions(); track opt.id) {
+            <button
+              type="button"
+              role="option"
+              class="gs__opt"
+              [id]="'gs-' + opt.id"
+              [class.is-active]="indexOf(opt.id) === active()"
+              [attr.aria-selected]="indexOf(opt.id) === active()"
+              (mouseenter)="active.set(indexOf(opt.id))"
+              (click)="choose(opt)"
+            >
+              <span class="gs__thumb"><img [src]="opt.item.image" alt="" width="64" height="48" loading="lazy" /></span>
+              <span class="gs__text">
+                <b>
+                  @for (p of parts(opt.item.name); track $index) {<span [class.gs__hit]="p.match">{{ p.text }}</span>}
+                </b>
+                <small>{{ opt.item.group }} in {{ opt.item.categoryLabel }}</small>
+              </span>
+              <span class="gs__price">₹{{ opt.item.price | number }}<small> per day</small></span>
+            </button>
+          }
+        }
+
+        @if (matches().length) {
+          <button
+            type="button"
+            role="option"
+            class="gs__all"
+            id="gs-all"
+            [class.is-active]="indexOf('all') === active()"
+            [attr.aria-selected]="indexOf('all') === active()"
+            (mouseenter)="active.set(indexOf('all'))"
+            (click)="submit()"
+          >
+            See all {{ matches().length }} results for “{{ text().trim() }}”
+            <span aria-hidden="true">→</span>
+          </button>
+        } @else if (!groupOptions().length) {
+          <p class="gs__none">No matches for “{{ text().trim() }}”. Try a brand like Sony or a type like “tripod”.</p>
+        }
+      }
+    </div>
+  }
+</div>

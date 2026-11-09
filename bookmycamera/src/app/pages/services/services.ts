@@ -26,7 +26,7 @@ export class Services implements OnInit {
     this.seo.setPage({
       title: 'Photography Services',
       description:
-        'Food, product, portrait, event, corporate, fashion, and more — book professional photography with BookMyCamera.',
+        'Food, product, portrait, event, corporate, fashion, and more. Book professional photography with BookMyCamera.',
       path: '/services',
     });
     this.load();

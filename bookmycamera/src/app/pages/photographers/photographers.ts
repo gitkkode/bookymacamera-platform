@@ -40,7 +40,7 @@ export class Photographers implements OnInit {
     this.seo.setPage({
       title: 'Photographers',
       description:
-        'Meet the photographers behind BookMyCamera. Filter by location, speciality, availability, and rating — then book a shoot.',
+        'Meet the photographers behind BookMyCamera. Filter by location, speciality, availability, and rating, then book a shoot.',
       path: '/photographers',
     });
     this.bootstrapFilters();

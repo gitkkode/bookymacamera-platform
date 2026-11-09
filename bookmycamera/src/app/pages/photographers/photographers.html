@@ -5,7 +5,7 @@
         <p class="eyebrow">Talent network</p>
         <h1 class="hero__title">Photographers ready for your brief</h1>
         <p class="lede">
-          Specialists across food, product, fashion, events, and brand — matched to your shoot
+          Specialists across food, product, fashion, events, and brand, matched to your shoot
           and available to book.
         </p>
         <p class="hero__count" aria-live="polite">
@@ -152,7 +152,7 @@
                 </h3>
                 <p class="card__specs">
                   @for (s of ph.specialities; track s; let last = $last) {
-                    <span>{{ s }}{{ last ? '' : ' · ' }}</span>
+                    <span>{{ s }}{{ last ? '' : ', ' }}</span>
                   }
                 </p>
                 <p class="card__stats">

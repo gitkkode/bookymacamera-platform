@@ -21,6 +21,7 @@ interface NavLink {
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
+  host: { '[class.is-overlay]': 'overlay()' },
 })
 export class Navbar implements OnInit {
   private readonly router = inject(Router);
@@ -28,11 +29,13 @@ export class Navbar implements OnInit {
 
   readonly menuOpen = signal(false);
   readonly scrolled = signal(false);
+  /** Home page: nav floats over the full-height hero instead of taking space. */
+  readonly overlay = signal(false);
 
   readonly links: NavLink[] = [
     { label: 'Home', path: '/' },
     { label: 'Book', path: '/book' },
-    { label: 'Cameras', path: '/cameras' },
+    { label: 'Gear', path: '/cameras' },
     { label: 'Photographers', path: '/photographers' },
     { label: 'Services', path: '/services' },
     { label: 'Pricing', path: '/pricing' },
@@ -41,12 +44,16 @@ export class Navbar implements OnInit {
 
   ngOnInit(): void {
     this.updateScrollState();
+    this.updateOverlay(this.router.url);
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(() => this.closeMenu());
+      .subscribe((event) => {
+        this.updateOverlay(event.urlAfterRedirects);
+        this.closeMenu();
+      });
   }
 
   @HostListener('window:scroll')
@@ -63,6 +70,11 @@ export class Navbar implements OnInit {
     if (!this.menuOpen()) return;
     this.menuOpen.set(false);
     this.syncBodyScroll();
+  }
+
+  private updateOverlay(url: string): void {
+    const path = url.split(/[?#]/)[0];
+    this.overlay.set(path === '/' || path === '');
   }
 
   private updateScrollState(): void {

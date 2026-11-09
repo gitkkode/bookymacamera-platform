@@ -13,7 +13,7 @@ export class ContactService {
       delay(500),
       map(() => ({
         success: true,
-        message: 'Thanks — we received your message and will get back to you soon.',
+        message: 'Thanks, we received your message and will get back to you soon.',
       })),
     );
   }

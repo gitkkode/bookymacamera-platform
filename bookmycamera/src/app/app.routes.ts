@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
@@ -14,9 +15,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/cameras/cameras').then((m) => m.Cameras),
   },
   {
+    // Product details open as a quick-view popup on the catalogue.
     path: 'cameras/:slug',
-    loadComponent: () =>
-      import('./pages/camera-detail/camera-detail').then((m) => m.CameraDetail),
+    redirectTo: ({ params }) =>
+      inject(Router).createUrlTree(['/cameras'], { queryParams: { item: params['slug'] } }),
   },
   {
     path: 'photographers',

@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ph-arjun-mehta",
+    "slug": "arjun-mehta",
+    "name": "Arjun Mehta",
+    "specialities": [
+      "Food",
+      "Lifestyle",
+      "Portrait"
+    ],
+    "rating": 4.9,
+    "shoots": 128,
+    "availableToday": true,
+    "location": "Mumbai",
+    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    "experience": "8 years",
+    "bio": "Demo profile. Food and lifestyle specialist with a clean, commercial aesthetic. Available for restaurant launches and brand content in Mumbai.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-priya-nair",
+    "slug": "priya-nair",
+    "name": "Priya Nair",
+    "specialities": [
+      "Fashion",
+      "Portrait",
+      "Editorial"
+    ],
+    "rating": 5,
+    "shoots": 96,
+    "availableToday": true,
+    "location": "Bengaluru",
+    "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
+    "experience": "7 years",
+    "bio": "Demo profile. Fashion and editorial photographer focused on lookbooks, apparel campaigns, and founder portraits.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-rahul-sharma",
+    "slug": "rahul-sharma",
+    "name": "Rahul Sharma",
+    "specialities": [
+      "Product",
+      "E-commerce",
+      "Studio"
+    ],
+    "rating": 4.8,
+    "shoots": 210,
+    "availableToday": false,
+    "location": "Delhi NCR",
+    "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80",
+    "experience": "10 years",
+    "bio": "Demo profile. Studio product specialist for D2C brands and marketplaces. Precision lighting and packshot workflows.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-ananya-iyer",
+    "slug": "ananya-iyer",
+    "name": "Ananya Iyer",
+    "specialities": [
+      "Events",
+      "Corporate",
+      "Social Media"
+    ],
+    "rating": 4.7,
+    "shoots": 84,
+    "availableToday": true,
+    "location": "Hyderabad",
+    "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=800&q=80",
+    "experience": "5 years",
+    "bio": "Demo profile. Fast-turnaround event and corporate coverage with social-ready deliverables.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-vikram-singh",
+    "slug": "vikram-singh",
+    "name": "Vikram Singh",
+    "specialities": [
+      "Real Estate",
+      "Architecture",
+      "Interior"
+    ],
+    "rating": 4.8,
+    "shoots": 152,
+    "availableToday": false,
+    "location": "Pune",
+    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+    "experience": "9 years",
+    "bio": "Demo profile. Real estate and interior photographer for listings, hospitality, and property marketing.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-meera-kapoor",
+    "slug": "meera-kapoor",
+    "name": "Meera Kapoor",
+    "specialities": [
+      "Brand",
+      "Campaign",
+      "Commercial"
+    ],
+    "rating": 4.9,
+    "shoots": 67,
+    "availableToday": true,
+    "location": "Mumbai",
+    "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
+    "experience": "6 years",
+    "bio": "Demo profile. Brand campaign photographer for startups and agencies. Concept-driven commercial storytelling.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-karthik-reddy",
+    "slug": "karthik-reddy",
+    "name": "Karthik Reddy",
+    "specialities": [
+      "Food",
+      "Product",
+      "Social Media"
+    ],
+    "rating": 4.7,
+    "shoots": 113,
+    "availableToday": true,
+    "location": "Chennai",
+    "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80",
+    "experience": "6 years",
+    "bio": "Demo profile. Food and product content for Instagram, menus, and quick-commerce platforms.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "id": "ph-sneha-patel",
+    "slug": "sneha-patel",
+    "name": "Sneha Patel",
+    "specialities": [
+      "Portrait",
+      "Corporate",
+      "Founder"
+    ],
+    "rating": 5,
+    "shoots": 75,
+    "availableToday": false,
+    "location": "Ahmedabad",
+    "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+    "experience": "7 years",
+    "bio": "Demo profile. Corporate and founder portraits with a natural, approachable look for LinkedIn and press kits.",
+    "portfolio": [
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80"
+    ]
+  }
+]

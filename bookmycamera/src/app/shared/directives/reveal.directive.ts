@@ -1,5 +1,6 @@
-import { Directive, ElementRef, OnDestroy, OnInit, inject } from '@angular/core';
+import { Directive } from '@angular/core';
 
+/** Adds the global `.reveal` class; the fade-in itself is pure CSS (see styles.css). */
 @Directive({
   selector: '[appReveal]',
   standalone: true,
@@ -7,42 +8,4 @@ import { Directive, ElementRef, OnDestroy, OnInit, inject } from '@angular/core'
     class: 'reveal',
   },
 })
-export class RevealDirective implements OnInit, OnDestroy {
-  private readonly el = inject(ElementRef<HTMLElement>);
-  private observer: IntersectionObserver | null = null;
-
-  ngOnInit(): void {
-    const host = this.el.nativeElement;
-    const prefersReduced =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReduced) {
-      host.classList.add('is-visible');
-      return;
-    }
-
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            host.classList.add('is-visible');
-            this.observer?.unobserve(host);
-          }
-        }
-      },
-      {
-        root: null,
-        rootMargin: '0px 0px -8% 0px',
-        threshold: 0.12,
-      },
-    );
-
-    this.observer.observe(host);
-  }
-
-  ngOnDestroy(): void {
-    this.observer?.disconnect();
-    this.observer = null;
-  }
-}
+export class RevealDirective {}

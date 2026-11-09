@@ -26,7 +26,7 @@ export class Pricing implements OnInit {
     this.seo.setPage({
       title: 'Pricing',
       description:
-        'Quick Shoot, Content Shoot, Event, and Custom photography packages. Placeholder prices are indicative — confirm on booking with BookMyCamera.',
+        'Quick Shoot, Content Shoot, Event, and Custom photography packages. Placeholder prices are indicative. Confirm on booking with BookMyCamera.',
       path: '/pricing',
     });
     this.load();

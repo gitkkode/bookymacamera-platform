@@ -1,0 +1,132 @@
+:host {
+  position: relative;
+  display: inline-block;
+  z-index: 15;
+}
+
+.sm__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 2.75rem;
+  padding: 0 1rem 0 0.95rem;
+  border: 1px solid var(--bmc-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--bmc-ink);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sm__trigger:hover,
+.sm__trigger.is-open {
+  border-color: var(--bmc-ink);
+}
+
+.sm__trigger:focus {
+  outline: none;
+}
+
+.sm__trigger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(196, 92, 26, 0.4);
+}
+
+.sm__icon {
+  color: var(--bmc-primary);
+}
+
+.sm__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bmc-muted);
+}
+
+.sm__value {
+  font-size: 0.85rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.sm__chev {
+  color: var(--bmc-muted);
+  transition: transform 0.25s var(--bmc-ease);
+}
+
+.sm__trigger.is-open .sm__chev {
+  transform: rotate(180deg);
+}
+
+.sm__menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 15rem;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  border: 1px solid var(--bmc-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 30px 60px -24px rgba(15, 14, 13, 0.4);
+  animation: sm-in 0.18s var(--bmc-ease);
+}
+
+@keyframes sm-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.sm__opt {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sm__opt.is-active {
+  background: var(--bmc-paper-2);
+}
+
+.sm__opt.is-selected {
+  color: var(--bmc-primary);
+}
+
+.sm__radio {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--bmc-line);
+  border-radius: 50%;
+}
+
+.sm__opt.is-selected .sm__radio {
+  border-color: var(--bmc-primary);
+}
+
+.sm__opt.is-selected .sm__radio::after {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--bmc-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm__menu {
+    animation: none;
+  }
+
+  .sm__chev {
+    transition: none;
+  }
+}

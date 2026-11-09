@@ -1,487 +1,561 @@
-<section class="book" aria-labelledby="book-heading">
-  <div class="book__shell">
-    @if (submitResult()?.success) {
-      <div class="book-success" role="status" aria-live="polite">
-        <div class="book-success__badge" aria-hidden="true">✓</div>
-        <p class="book-eyebrow">Booking confirmed</p>
-        <h1 id="book-heading" class="book-title">Request received</h1>
-        <p class="book-lede">
-          {{ submitResult()!.message }}
-        </p>
-
-        <div class="book-success__ref">
-          <p class="book-success__ref-label">Reference ID</p>
-          <p class="book-success__ref-id">{{ submitResult()!.referenceId }}</p>
-          <p class="book-success__ref-hint">Save this ID — quote it if you contact support.</p>
-        </div>
-
-        <p class="book-trust">
-          No charge until confirmed · Dispatch subject to availability
-        </p>
-
-        <div class="book-success__actions">
-          <button
-            type="button"
-            class="bmc-btn bmc-btn--primary bmc-btn--lg"
-            (click)="startNewBooking()"
-          >
-            Book another shoot
-          </button>
-          <a routerLink="/" class="bmc-btn bmc-btn--secondary">Back to home</a>
-        </div>
+<div class="bk" #top>
+  <!-- Header band -->
+  <header class="bk-hero">
+    <div class="bk-shell bk-hero__inner">
+      <div>
+        <p class="bk-eyebrow">Book a shoot</p>
+        <h1 id="book-heading" class="bk-hero__title">
+          @if (submitResult()?.success) {
+            You are all set.
+          } @else {
+            Let’s plan your shoot.
+          }
+        </h1>
+        <p class="bk-hero__lede">Seven quick steps. Takes about two minutes, and nothing is charged until we confirm.</p>
       </div>
+      <ul class="bk-trust" aria-label="Why book with us">
+        <li>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+          <span><b>No payment now</b><small>Pay only after we confirm</small></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>
+          <span><b>Vetted photographers</b><small>Matched to your shoot type</small></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" /><circle cx="12" cy="13" r="4" /></svg>
+          <span><b>Pro camera included</b><small>Every booking comes with kit</small></span>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="bk-shell bk-body">
+    @if (submitResult()?.success) {
+      <!-- ================= Success ================= -->
+      <section class="bk-done" role="status" aria-live="polite">
+        <div class="bk-done__check" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="64" height="64">
+            <circle cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="3" />
+            <path d="M15 27l7 7 15-16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <h2 class="bk-done__title">Booking request received</h2>
+        <p class="bk-done__lede">{{ submitResult()!.message }}</p>
+
+        <div class="bk-ref">
+          <div>
+            <p class="bk-ref__label">Reference ID</p>
+            <p class="bk-ref__id">{{ submitResult()!.referenceId }}</p>
+          </div>
+          <button type="button" class="bk-btn bk-btn--line bk-btn--sm" (click)="copyReference()">
+            {{ copied() ? 'Copied' : 'Copy ID' }}
+          </button>
+        </div>
+
+        <ol class="bk-next" aria-label="What happens next">
+          <li class="is-done">
+            <span aria-hidden="true">1</span>
+            <div><b>Request sent</b><small>We have your shoot details</small></div>
+          </li>
+          <li>
+            <span aria-hidden="true">2</span>
+            <div><b>We confirm availability</b><small>Photographer, camera and final price</small></div>
+          </li>
+          <li>
+            <span aria-hidden="true">3</span>
+            <div><b>Shoot day</b><small>Your crew arrives with the kit</small></div>
+          </li>
+        </ol>
+
+        <div class="bk-done__actions">
+          <button type="button" class="bk-btn" (click)="startNewBooking()">Book another shoot</button>
+          <a routerLink="/" class="bk-btn bk-btn--line">Back to home</a>
+        </div>
+      </section>
     } @else {
-      <!-- Progress stepper -->
-      <nav class="book-steps" aria-label="Booking progress">
-        <ol class="book-steps__list">
-          @for (step of steps; track step.index) {
-            <li
-              class="book-steps__item"
-              [class.is-current]="isStepCurrent(step.index)"
-              [class.is-complete]="isStepComplete(step.index)"
-              [class.is-clickable]="isStepClickable(step.index)"
-            >
+      <!-- ================= Stepper ================= -->
+      <nav class="bk-steps" aria-label="Booking progress">
+        <div class="bk-steps__bar" aria-hidden="true"><span [style.width.%]="progressPct()"></span></div>
+        <ol>
+          @for (s of steps; track s.index) {
+            <li>
               <button
                 type="button"
-                class="book-steps__btn"
-                [disabled]="!isStepClickable(step.index)"
-                [attr.aria-current]="isStepCurrent(step.index) ? 'step' : null"
-                [attr.aria-label]="
-                  'Step ' + step.index + ' of ' + totalSteps + ': ' + step.label +
-                  (isStepComplete(step.index) ? ', completed' : '') +
-                  (isStepCurrent(step.index) ? ', current' : '')
-                "
-                (click)="goToStep(step.index)"
+                class="bk-step"
+                [class.is-current]="s.index === currentStep()"
+                [class.is-done]="isStepComplete(s.index) && s.index !== currentStep()"
+                [disabled]="!isStepClickable(s.index)"
+                [attr.aria-current]="s.index === currentStep() ? 'step' : null"
+                [attr.aria-label]="'Step ' + s.index + ' of ' + totalSteps + ', ' + s.label"
+                (click)="goToStep(s.index)"
               >
-                <span class="book-steps__num" aria-hidden="true">
-                  @if (isStepComplete(step.index)) {
-                    ✓
+                <span class="bk-step__dot" aria-hidden="true">
+                  @if (isStepComplete(s.index) && s.index !== currentStep()) {
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"
+                         stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
                   } @else {
-                    {{ step.index }}
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="s.icon" /></svg>
                   }
                 </span>
-                <span class="book-steps__label">{{ step.label }}</span>
+                <span class="bk-step__label">{{ s.label }}</span>
               </button>
             </li>
           }
         </ol>
-        <p class="book-steps__status sr-only" aria-live="polite">
-          Step {{ currentStep() }} of {{ totalSteps }}: {{ stepTitle() }}
-        </p>
+        <p class="sr-only" aria-live="polite">Step {{ currentStep() }} of {{ totalSteps }}, {{ step().title }}</p>
       </nav>
 
-      <div class="book-layout">
-        <!-- Left sticky summary (desktop) -->
-        <aside class="book-summary" aria-label="Booking summary">
-          <p class="book-summary__eyebrow">Your booking</p>
-          <h2 class="book-summary__title">Summary</h2>
-
-          <dl class="book-summary__list">
-            <div class="book-summary__row" [class.is-filled]="!!state().shootType">
-              <dt>Shoot</dt>
-              <dd>{{ state().shootType || 'Not selected' }}</dd>
+      <div class="bk-layout">
+        <!-- ================= Main card ================= -->
+        <section class="bk-card" [attr.aria-labelledby]="'bk-step-title'">
+          <header class="bk-card__head">
+            <span class="bk-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"
+                   stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="step().icon" /></svg>
+            </span>
+            <div>
+              <p class="bk-card__count">Step {{ currentStep() }} of {{ totalSteps }}</p>
+              <h2 id="bk-step-title" class="bk-card__title">{{ step().title }}</h2>
+              <p class="bk-card__hint">{{ step().hint }}</p>
             </div>
-            <div class="book-summary__row" [class.is-filled]="!!locationLabel()">
-              <dt>Location</dt>
-              <dd>{{ locationLabel() || 'Not set' }}</dd>
-            </div>
-            <div class="book-summary__row" [class.is-filled]="whenLabel() !== '—'">
-              <dt>When</dt>
-              <dd>{{ whenLabel() === '—' ? 'Not set' : whenLabel() }}</dd>
-            </div>
-            <div class="book-summary__row" [class.is-filled]="cameraLabel() !== '—'">
-              <dt>Camera</dt>
-              <dd>{{ cameraLabel() === '—' ? 'Not selected' : cameraLabel() }}</dd>
-            </div>
-            <div class="book-summary__row" [class.is-filled]="durationLabel() !== '—'">
-              <dt>Duration</dt>
-              <dd>{{ durationLabel() === '—' ? 'Not selected' : durationLabel() }}</dd>
-            </div>
-          </dl>
-
-          <p class="book-trust book-trust--summary">
-            No charge until confirmed · Dispatch subject to availability
-          </p>
-        </aside>
-
-        <!-- Right: step content -->
-        <div class="book-main">
-          <header class="book-header">
-            <p class="book-eyebrow">Step {{ currentStep() }} of {{ totalSteps }}</p>
-            <h1 id="book-heading" class="book-title">{{ stepTitle() }}</h1>
-            <p class="book-lede">{{ stepHint() }}</p>
           </header>
 
-          <div class="book-panel" [attr.aria-labelledby]="'book-step-' + currentStep()">
-            <h2 [id]="'book-step-' + currentStep()" class="sr-only">
-              Step {{ currentStep() }}: {{ stepTitle() }}
-            </h2>
-
-            <!-- STEP 1: Shoot type -->
-            @if (currentStep() === 1) {
-              <div class="option-grid option-grid--types" role="radiogroup" aria-label="Shoot type">
-                @for (type of shootTypes; track type.id) {
-                  <button
-                    type="button"
-                    class="option-card"
-                    role="radio"
-                    [attr.aria-checked]="state().shootType === type.label"
-                    [class.is-selected]="state().shootType === type.label"
-                    (click)="selectShootType(type.label)"
-                  >
-                    <span class="option-card__title">{{ type.label }}</span>
-                    <span class="option-card__desc">{{ type.description }}</span>
-                  </button>
-                }
-              </div>
-            }
-
-            <!-- STEP 2: Location -->
-            @if (currentStep() === 2) {
-              <form class="book-form" [formGroup]="locationForm" (ngSubmit)="$event.preventDefault()">
-                <div class="book-field">
-                  <label class="book-label" for="book-city">City</label>
-                  <input
-                    id="book-city"
-                    class="book-input"
-                    type="text"
-                    formControlName="city"
-                    autocomplete="address-level2"
-                    placeholder="e.g. Mumbai"
-                    aria-required="true"
-                  />
-                </div>
-                <div class="book-field">
-                  <label class="book-label" for="book-area">Area</label>
-                  <input
-                    id="book-area"
-                    class="book-input"
-                    type="text"
-                    formControlName="area"
-                    autocomplete="address-level3"
-                    placeholder="e.g. Bandra West"
-                    aria-required="true"
-                  />
-                </div>
-                <div class="book-field">
-                  <label class="book-label" for="book-address">Address</label>
-                  <textarea
-                    id="book-address"
-                    class="book-input book-input--textarea"
-                    formControlName="address"
-                    rows="3"
-                    autocomplete="street-address"
-                    placeholder="Venue or full address for the shoot"
-                    aria-required="true"
-                  ></textarea>
-                </div>
-              </form>
-            }
-
-            <!-- STEP 3: When -->
-            @if (currentStep() === 3) {
-              <div class="when-options" role="radiogroup" aria-label="Timing preference">
-                <button
-                  type="button"
-                  class="option-card option-card--when"
-                  role="radio"
-                  [attr.aria-checked]="state().urgency === 'asap'"
-                  [class.is-selected]="state().urgency === 'asap'"
-                  (click)="selectUrgency('asap')"
-                >
-                  <span class="option-card__badge">Fastest</span>
-                  <span class="option-card__title">ASAP</span>
-                  <span class="option-card__desc">
-                    Dispatch in as little as 90 minutes*
-                  </span>
-                  <span class="option-card__note">
-                    *Subject to photographer and camera availability in your area.
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  class="option-card option-card--when"
-                  role="radio"
-                  [attr.aria-checked]="state().urgency === 'scheduled'"
-                  [class.is-selected]="state().urgency === 'scheduled'"
-                  (click)="selectUrgency('scheduled')"
-                >
-                  <span class="option-card__title">Schedule</span>
-                  <span class="option-card__desc">
-                    Pick a preferred date and time for your shoot.
-                  </span>
-                </button>
-              </div>
-
-              @if (state().urgency === 'scheduled') {
-                <div class="book-form book-form--inline">
-                  <div class="book-field">
-                    <label class="book-label" for="book-date">Date</label>
-                    <input
-                      id="book-date"
-                      class="book-input"
-                      type="date"
-                      [min]="minDate()"
-                      [value]="state().date"
-                      (change)="onDateChange($any($event.target).value)"
-                      aria-required="true"
-                    />
-                  </div>
-                  <div class="book-field">
-                    <label class="book-label" for="book-time">Time</label>
-                    <input
-                      id="book-time"
-                      class="book-input"
-                      type="time"
-                      [value]="state().time"
-                      (change)="onTimeChange($any($event.target).value)"
-                      aria-required="true"
-                    />
-                  </div>
-                </div>
-              }
-            }
-
-            <!-- STEP 4: Camera -->
-            @if (currentStep() === 4) {
-              <button
-                type="button"
-                class="option-card option-card--choose"
-                role="radio"
-                [attr.aria-checked]="state().cameraChoice === 'let-us-choose'"
-                [class.is-selected]="state().cameraChoice === 'let-us-choose'"
-                (click)="selectLetUsChoose()"
-                aria-label="Not sure? Let our team choose the camera"
-              >
-                <span class="option-card__kicker">Not sure?</span>
-                <span class="option-card__title">Let our team choose</span>
-                <span class="option-card__desc">
-                  We’ll match the right body to your brief, location, and shoot type.
-                </span>
-              </button>
-
-              @if (camerasLoading()) {
-                <p class="book-state" role="status">Loading cameras…</p>
-              } @else if (camerasError()) {
-                <p class="book-state book-state--error" role="alert">{{ camerasError() }}</p>
-              } @else {
-                <div class="camera-grid" role="radiogroup" aria-label="Camera selection">
-                  @for (cam of cameras(); track cam.id) {
+          @for (k of [currentStep()]; track k) {
+            <div class="bk-card__body">
+              <!-- STEP 1: Shoot type -->
+              @if (k === 1) {
+                <div class="bk-types" role="radiogroup" aria-label="Shoot type">
+                  @for (type of shootTypes; track type.id) {
                     <button
                       type="button"
-                      class="camera-option"
                       role="radio"
-                      [attr.aria-checked]="
-                        state().cameraChoice === 'specific' && state().cameraId === cam.id
-                      "
-                      [class.is-selected]="
-                        state().cameraChoice === 'specific' && state().cameraId === cam.id
-                      "
-                      (click)="selectCamera(cam)"
+                      class="bk-type"
+                      [class.is-on]="state().shootType === type.label"
+                      [attr.aria-checked]="state().shootType === type.label"
+                      (click)="selectShootType(type.label)"
                     >
-                      <span class="camera-option__media">
-                        <img
-                          [src]="cam.image"
-                          [alt]="cam.brand + ' ' + cam.model"
-                          width="320"
-                          height="240"
-                          loading="lazy"
-                        />
+                      <span class="bk-type__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"
+                             stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="shootIcon(type.id)" /></svg>
                       </span>
-                      <span class="camera-option__body">
-                        <span class="camera-option__brand">{{ cam.brand }}</span>
-                        <span class="camera-option__model">{{ cam.model }}</span>
-                        <span class="camera-option__meta">{{ cam.category }}</span>
-                      </span>
+                      <span class="bk-type__title">{{ type.label }}</span>
+                      <span class="bk-type__desc">{{ type.description }}</span>
+                      <span class="bk-tick" aria-hidden="true"></span>
                     </button>
                   }
                 </div>
               }
-            }
 
-            <!-- STEP 5: Duration -->
-            @if (currentStep() === 5) {
-              <div class="option-grid option-grid--durations" role="radiogroup" aria-label="Shoot duration">
-                @for (dur of durations; track dur.hours) {
-                  <button
-                    type="button"
-                    class="option-card option-card--duration"
-                    role="radio"
-                    [attr.aria-checked]="state().durationHours === dur.hours"
-                    [class.is-selected]="state().durationHours === dur.hours"
-                    (click)="selectDuration(dur.hours)"
-                  >
-                    <span class="option-card__title">{{ dur.label }}</span>
-                    @if (dur.priceLabel) {
-                      <span class="option-card__desc">{{ dur.priceLabel }}</span>
-                    }
-                  </button>
-                }
-              </div>
-            }
-
-            <!-- STEP 6: Brief -->
-            @if (currentStep() === 6) {
-              <div class="book-form">
-                <div class="book-field">
-                  <label class="book-label" for="book-brief">
-                    Tell us about your shoot
-                    <span class="book-label__hint">Required — a few sentences go a long way</span>
-                  </label>
-                  <textarea
-                    id="book-brief"
-                    class="book-input book-input--textarea book-input--brief"
-                    rows="6"
-                    [value]="state().brief"
-                    (input)="onBriefChange($any($event.target).value)"
-                    placeholder="Mood, must-have shots, brand references, lighting notes, deliverables…"
-                    aria-required="true"
-                  ></textarea>
-                </div>
-              </div>
-            }
-
-            <!-- STEP 7: Review -->
-            @if (currentStep() === 7) {
-              <div class="book-review">
-                <dl class="review-list">
-                  <div class="review-row">
-                    <dt>Shoot type</dt>
-                    <dd>{{ state().shootType || '—' }}</dd>
-                  </div>
-                  <div class="review-row">
-                    <dt>Location</dt>
-                    <dd>
-                      {{ state().address }}, {{ state().area }}, {{ state().city }}
-                    </dd>
-                  </div>
-                  <div class="review-row">
-                    <dt>When</dt>
-                    <dd>{{ whenLabel() }}</dd>
-                  </div>
-                  <div class="review-row">
-                    <dt>Camera</dt>
-                    <dd>{{ cameraLabel() }}</dd>
-                  </div>
-                  <div class="review-row">
-                    <dt>Duration</dt>
-                    <dd>{{ durationLabel() }}</dd>
-                  </div>
-                  <div class="review-row">
-                    <dt>Brief</dt>
-                    <dd class="review-brief">{{ state().brief || '—' }}</dd>
-                  </div>
-                  @if (state().photographerId) {
-                    <div class="review-row">
-                      <dt>Preferred photographer</dt>
-                      <dd>{{ state().photographerId }}</dd>
+              <!-- STEP 2: Location -->
+              @if (k === 2) {
+                <form class="bk-form" [formGroup]="locationForm" (ngSubmit)="$event.preventDefault()">
+                  <div class="bk-field">
+                    <label class="bk-label" for="book-city">City</label>
+                    <div class="bk-chips" aria-label="Popular cities">
+                      @for (c of quickCities; track c) {
+                        <button
+                          type="button"
+                          class="bk-chip"
+                          [class.is-on]="locationForm.controls.city.value === c"
+                          (click)="setCity(c)"
+                        >{{ c }}</button>
+                      }
                     </div>
+                    <div class="bk-input-wrap">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+                           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" /></svg>
+                      <input id="book-city" class="bk-input" type="text" formControlName="city"
+                             autocomplete="address-level2" placeholder="Or type your city" aria-required="true" />
+                    </div>
+                  </div>
+                  <div class="bk-field">
+                    <label class="bk-label" for="book-area">Area or neighbourhood</label>
+                    <div class="bk-input-wrap">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+                           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                      <input id="book-area" class="bk-input" type="text" formControlName="area"
+                             autocomplete="address-level3" placeholder="For example Indiranagar" aria-required="true" />
+                    </div>
+                  </div>
+                  <div class="bk-field">
+                    <label class="bk-label" for="book-address">Venue or full address</label>
+                    <textarea id="book-address" class="bk-input bk-input--area" formControlName="address" rows="3"
+                              autocomplete="street-address" placeholder="Building, street and any landmark that helps the crew find you"
+                              aria-required="true"></textarea>
+                    <p class="bk-help">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+                      Only shared with the photographer assigned to your booking.
+                    </p>
+                  </div>
+                </form>
+              }
+
+              <!-- STEP 3: When -->
+              @if (k === 3) {
+                <div class="bk-when" role="radiogroup" aria-label="Timing">
+                  <button type="button" role="radio" class="bk-option" [class.is-on]="state().urgency === 'asap'"
+                          [attr.aria-checked]="state().urgency === 'asap'" (click)="selectUrgency('asap')">
+                    <span class="bk-option__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"
+                           stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg>
+                    </span>
+                    <span class="bk-option__text">
+                      <b>ASAP <em>Fastest</em></b>
+                      <small>Crew on location in as little as 90 minutes, subject to availability in your area.</small>
+                    </span>
+                    <span class="bk-tick" aria-hidden="true"></span>
+                  </button>
+                  <button type="button" role="radio" class="bk-option" [class.is-on]="state().urgency === 'scheduled'"
+                          [attr.aria-checked]="state().urgency === 'scheduled'" (click)="selectUrgency('scheduled')">
+                    <span class="bk-option__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"
+                           stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" /></svg>
+                    </span>
+                    <span class="bk-option__text">
+                      <b>Schedule</b>
+                      <small>Pick a date and time that works for you.</small>
+                    </span>
+                    <span class="bk-tick" aria-hidden="true"></span>
+                  </button>
+                </div>
+
+                @if (state().urgency === 'scheduled') {
+                  <div class="bk-sched">
+                    <!-- Date -->
+                    <div class="bk-cal">
+                      <div class="bk-cal__top">
+                        <p class="bk-label">Pick a date</p>
+                        <div class="bk-chips">
+                          @for (qd of quickDates(); track qd.label) {
+                            <button type="button" class="bk-chip" [class.is-on]="state().date === qd.value"
+                                    (click)="selectDate(qd.value)">{{ qd.label }}</button>
+                          }
+                        </div>
+                      </div>
+
+                      <div class="bk-cal__panel">
+                        <div class="bk-cal__head">
+                          <button type="button" class="bk-cal__nav" (click)="changeMonth(-1)" [disabled]="!canPrevMonth()"
+                                  aria-label="Previous month">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4"
+                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+                          </button>
+                          <p class="bk-cal__month" aria-live="polite">{{ monthLabel() }}</p>
+                          <button type="button" class="bk-cal__nav" (click)="changeMonth(1)" [disabled]="!canNextMonth()"
+                                  aria-label="Next month">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4"
+                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+                          </button>
+                        </div>
+
+                        <div class="bk-cal__grid" role="grid" [attr.aria-label]="monthLabel()">
+                          @for (w of weekdays; track w) {
+                            <span class="bk-cal__wd" role="columnheader">{{ w }}</span>
+                          }
+                          @for (cell of calendar(); track $index) {
+                            @if (cell) {
+                              <button type="button" class="bk-cal__day" role="gridcell"
+                                      [class.is-on]="state().date === cell.value"
+                                      [class.is-today]="cell.today"
+                                      [disabled]="cell.disabled"
+                                      [attr.aria-selected]="state().date === cell.value"
+                                      [attr.aria-label]="formatDate(cell.value)"
+                                      (click)="selectDate(cell.value)">{{ cell.day }}</button>
+                            } @else {
+                              <span aria-hidden="true"></span>
+                            }
+                          }
+                        </div>
+                        <p class="bk-help">Book up to six months ahead.</p>
+                      </div>
+                    </div>
+
+                    <!-- Time range -->
+                    @if (state().date) {
+                      <div class="bk-range">
+                        <p class="bk-label">Shoot time for {{ formatDate(state().date) }}</p>
+                        @if (noSlotsToday()) {
+                          <p class="bk-state">It is too late to schedule for today. Pick another date or go ASAP.</p>
+                        } @else {
+                          <div class="bk-range__row">
+                            <div class="bk-range__field">
+                              <app-bmc-select label="From" placeholder="Start time" ariaLabel="Start time"
+                                              [options]="fromOptions()" [ngModel]="state().time"
+                                              (ngModelChange)="setStart($event)" />
+                            </div>
+                            <span class="bk-range__arrow" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                                   stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                            </span>
+                            <div class="bk-range__field" [class.is-disabled]="!state().time">
+                              <app-bmc-select label="To" placeholder="End time" ariaLabel="End time"
+                                              [options]="toOptions()" [disabled]="!state().time"
+                                              [ngModel]="state().endTime" (ngModelChange)="setEnd($event)" />
+                            </div>
+                          </div>
+
+                          @if (state().time) {
+                            <div class="bk-range__quick">
+                              <span>Length</span>
+                              @for (h of quickLengths; track h) {
+                                <button type="button" class="bk-chip" [class.is-on]="rangeHours() === h"
+                                        [disabled]="!isLengthAvailable(h)" (click)="setLength(h)">{{ formatHours(h) }}</button>
+                              }
+                            </div>
+                          }
+
+                          @if (state().time && state().endTime) {
+                            <p class="bk-range__sum">
+                              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                              {{ formatTime(state().time) }} to {{ formatTime(state().endTime) }}
+                              <b>{{ formatHours(rangeHours()) }}</b>
+                            </p>
+                          }
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              }
+
+              <!-- STEP 4: Camera -->
+              @if (k === 4) {
+                <button type="button" role="radio" class="bk-option bk-option--wide"
+                        [class.is-on]="state().cameraChoice === 'let-us-choose'"
+                        [attr.aria-checked]="state().cameraChoice === 'let-us-choose'" (click)="selectLetUsChoose()">
+                  <span class="bk-option__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" /></svg>
+                  </span>
+                  <span class="bk-option__text">
+                    <b>Let our team choose <em>Recommended</em></b>
+                    <small>We match the right body and lenses to your brief, location and shoot type.</small>
+                  </span>
+                  <span class="bk-tick" aria-hidden="true"></span>
+                </button>
+
+                <p class="bk-divider"><span>or pick a specific camera</span></p>
+
+                @if (camerasLoading()) {
+                  <p class="bk-state" role="status">Loading cameras…</p>
+                } @else if (camerasError()) {
+                  <p class="bk-state bk-state--error" role="alert">{{ camerasError() }}</p>
+                } @else {
+                  <div class="bk-cams" role="radiogroup" aria-label="Camera">
+                    @for (cam of cameras(); track cam.id) {
+                      <button type="button" role="radio" class="bk-cam"
+                              [class.is-on]="state().cameraChoice === 'specific' && state().cameraId === cam.id"
+                              [attr.aria-checked]="state().cameraChoice === 'specific' && state().cameraId === cam.id"
+                              (click)="selectCamera(cam)">
+                        <span class="bk-cam__media">
+                          <img [src]="cam.image" [alt]="cam.model" width="240" height="180" loading="lazy" />
+                        </span>
+                        <span class="bk-cam__brand">{{ cam.brand }}</span>
+                        <span class="bk-cam__model">{{ cam.model }}</span>
+                        <span class="bk-cam__price"><span class="inr">₹</span>{{ cam.price.toLocaleString('en-IN') }} <small>per day</small></span>
+                        <span class="bk-tick" aria-hidden="true"></span>
+                      </button>
+                    }
+                  </div>
+                }
+              }
+
+              <!-- STEP 5: Duration -->
+              @if (k === 5) {
+                @if (state().urgency === 'scheduled' && state().time && state().endTime) {
+                  <p class="bk-note">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                    Set from your time slot, {{ formatTime(state().time) }} to {{ formatTime(state().endTime) }}.
+                    Picking another length moves the end time.
+                  </p>
+                }
+                <div class="bk-durs" role="radiogroup" aria-label="Duration">
+                  @for (dur of durationCards(); track dur.hours) {
+                    <button type="button" role="radio" class="bk-dur" [class.is-on]="state().durationHours === dur.hours"
+                            [attr.aria-checked]="state().durationHours === dur.hours" (click)="selectDuration(dur.hours)">
+                      @if (dur.custom) {
+                        <span class="bk-dur__tag">Your time slot</span>
+                      } @else if (dur.hours === 2) {
+                        <span class="bk-dur__tag">Most booked</span>
+                      }
+                      <span class="bk-dur__num">{{ formatHours(dur.hours) }}</span>
+                      <span class="bk-dur__fit">{{ dur.custom ? 'Matches the start and end time you picked' : durationFit(dur.hours) }}</span>
+                      <span class="bk-tick" aria-hidden="true"></span>
+                    </button>
+                  }
+                </div>
+                <p class="bk-help">Pricing for each duration is indicative and confirmed when we accept your booking.</p>
+              }
+
+              <!-- STEP 6: Brief -->
+              @if (k === 6) {
+                <div class="bk-field">
+                  <div class="bk-brief-head">
+                    <label class="bk-label" for="book-brief">Your brief <em>Optional</em></label>
+                    <span class="bk-count">{{ state().brief.length }} of {{ briefMax }}</span>
+                  </div>
+                  <textarea #briefField id="book-brief" class="bk-input bk-input--area bk-input--brief" rows="7"
+                            [attr.maxlength]="briefMax" [value]="state().brief"
+                            (input)="onBriefChange($any($event.target).value)"
+                            placeholder="Mood, must-have shots, brand references, lighting notes or deliverables"></textarea>
+                  <p class="bk-label bk-label--soft">Quick add</p>
+                  <div class="bk-chips">
+                    @for (p of briefPrompts; track p) {
+                      <button type="button" class="bk-chip bk-chip--add" (click)="addPrompt(p)">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6"
+                             stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                        {{ p.replace(': ', '') }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- STEP 7: Review -->
+              @if (k === 7) {
+                <dl class="bk-review">
+                  <div><dt>Shoot type</dt><dd>{{ state().shootType }}</dd>
+                    <button type="button" class="bk-edit" (click)="editStep(1)">Edit</button></div>
+                  <div><dt>Location</dt><dd>{{ fullAddress() }}</dd>
+                    <button type="button" class="bk-edit" (click)="editStep(2)">Edit</button></div>
+                  <div><dt>When</dt><dd>{{ whenLabel() }}</dd>
+                    <button type="button" class="bk-edit" (click)="editStep(3)">Edit</button></div>
+                  <div><dt>Camera</dt><dd>{{ cameraLabel() }}</dd>
+                    <button type="button" class="bk-edit" (click)="editStep(4)">Edit</button></div>
+                  <div><dt>Duration</dt><dd>{{ durationLabel() }}</dd>
+                    <button type="button" class="bk-edit" (click)="editStep(5)">Edit</button></div>
+                  <div><dt>Brief</dt><dd class="bk-review__brief">{{ state().brief || 'No brief added' }}</dd>
+                    <button type="button" class="bk-edit" (click)="editStep(6)">Edit</button></div>
+                  @if (state().photographerId) {
+                    <div><dt>Preferred photographer</dt><dd>{{ state().photographerId }}</dd></div>
                   }
                 </dl>
 
-                <p class="book-trust">
-                  No charge until confirmed · Dispatch subject to availability
-                </p>
+                <div class="bk-assure">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>
+                  <p>
+                    <b>Sending this is free.</b>
+                    We confirm the photographer, camera and final price with you before anything is charged.
+                    Dispatch is subject to availability.
+                  </p>
+                </div>
 
                 @if (submitError()) {
-                  <div class="book-alert" role="alert">
+                  <div class="bk-alert" role="alert">
                     <p>{{ submitError() }}</p>
-                    <button
-                      type="button"
-                      class="bmc-btn bmc-btn--secondary"
-                      (click)="retrySubmit()"
-                      [disabled]="submitting()"
-                    >
-                      Retry
-                    </button>
+                    <button type="button" class="bk-btn bk-btn--line bk-btn--sm" (click)="retrySubmit()" [disabled]="submitting()">Try again</button>
                   </div>
                 }
-              </div>
-            }
-          </div>
+              }
+            </div>
+          }
 
-          <!-- Desktop nav -->
-          <div class="book-nav book-nav--desktop">
-            <button
-              type="button"
-              class="bmc-btn bmc-btn--ghost book-nav__back"
-              (click)="prev()"
-              [disabled]="!canGoPrev() || submitting()"
-              aria-label="Go to previous step"
-            >
+          <!-- Card footer nav -->
+          <footer class="bk-nav">
+            <button type="button" class="bk-btn bk-btn--ghost" (click)="prev()" [disabled]="!canGoPrev() || submitting()">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
               Back
             </button>
-
+            @if (!canProceed() && missingHint()) {
+              <p class="bk-nav__hint" role="status">{{ missingHint() }}</p>
+            }
             @if (!isLastStep()) {
-              <button
-                type="button"
-                class="bmc-btn bmc-btn--primary book-nav__continue"
-                (click)="next()"
-                [disabled]="!canProceed()"
-                aria-label="Continue to next step"
-              >
+              <button type="button" class="bk-btn" (click)="next()" [disabled]="!canProceed()">
                 Continue
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
               </button>
             } @else {
-              <button
-                type="button"
-                class="bmc-btn bmc-btn--primary bmc-btn--lg book-nav__continue"
-                (click)="submit()"
-                [disabled]="submitting() || !canProceed()"
-                [attr.aria-busy]="submitting()"
-                aria-label="Submit booking request"
-              >
+              <button type="button" class="bk-btn bk-btn--send" (click)="submit()" [disabled]="submitting() || !canProceed()"
+                      [attr.aria-busy]="submitting()">
                 @if (submitting()) {
-                  Submitting…
+                  <span class="bk-spin" aria-hidden="true"></span> Sending
                 } @else {
-                  Book now
+                  Send booking request
                 }
               </button>
             }
+          </footer>
+        </section>
+
+        <!-- ================= Summary ================= -->
+        <aside class="bk-side" aria-label="Booking summary">
+          <div class="bk-sum">
+            <div class="bk-sum__head">
+              <div>
+                <p class="bk-eyebrow bk-eyebrow--dark">Your booking</p>
+                <p class="bk-sum__title">{{ state().shootType ? state().shootType + ' shoot' : 'New shoot' }}</p>
+              </div>
+              <span class="bk-ring" [style.--p]="filledCount() / requiredCount" [attr.aria-label]="filledCount() + ' of ' + requiredCount + ' details added'">
+                <b>{{ filledCount() }}/{{ requiredCount }}</b>
+              </span>
+            </div>
+
+            <dl class="bk-sum__list">
+              @for (row of summaryRows(); track row.step) {
+                <div class="bk-sum__row" [class.is-filled]="!!row.value" [class.is-current]="row.step === currentStep()">
+                  <span class="bk-sum__dot" aria-hidden="true"></span>
+                  <dt>{{ row.label }}</dt>
+                  <dd>{{ row.value || 'Not set yet' }}</dd>
+                  @if (row.value && row.step !== currentStep() && row.step <= maxReached()) {
+                    <button type="button" class="bk-edit" (click)="editStep(row.step)" [attr.aria-label]="'Edit ' + row.label">Edit</button>
+                  }
+                </div>
+              }
+            </dl>
+
+            @if (selectedCamera(); as cam) {
+              <div class="bk-sum__cam">
+                <img [src]="cam.image" alt="" width="72" height="54" />
+                <div>
+                  <small>Camera rental from</small>
+                  <b><span class="inr">₹</span>{{ cam.price.toLocaleString('en-IN') }} per day</b>
+                </div>
+              </div>
+            }
+
+            <p class="bk-sum__note">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+              No charge until we confirm your booking.
+            </p>
           </div>
-        </div>
+
+          <div class="bk-help-card">
+            <p><b>Need help booking?</b> Talk to a real person and we will set it up for you.</p>
+            <a routerLink="/contact" class="bk-btn bk-btn--line bk-btn--sm">Contact us</a>
+          </div>
+        </aside>
       </div>
 
-      <!-- Mobile sticky bottom CTA -->
-      <div class="book-nav book-nav--mobile">
-        <button
-          type="button"
-          class="bmc-btn bmc-btn--ghost book-nav__back"
-          (click)="prev()"
-          [disabled]="!canGoPrev() || submitting()"
-          aria-label="Go to previous step"
-        >
-          Back
+      <!-- Mobile sticky nav -->
+      <div class="bk-mnav">
+        <button type="button" class="bk-btn bk-btn--ghost" (click)="prev()" [disabled]="!canGoPrev() || submitting()" aria-label="Back">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
         </button>
-
+        <div class="bk-mnav__progress" aria-hidden="true">
+          <small>Step {{ currentStep() }} of {{ totalSteps }}</small>
+          <span><i [style.width.%]="progressPct()"></i></span>
+        </div>
         @if (!isLastStep()) {
-          <button
-            type="button"
-            class="bmc-btn bmc-btn--primary book-nav__continue"
-            (click)="next()"
-            [disabled]="!canProceed()"
-            aria-label="Continue to next step"
-          >
-            Continue
-          </button>
+          <button type="button" class="bk-btn" (click)="next()" [disabled]="!canProceed()">Continue</button>
         } @else {
-          <button
-            type="button"
-            class="bmc-btn bmc-btn--primary bmc-btn--lg book-nav__continue"
-            (click)="submit()"
-            [disabled]="submitting() || !canProceed()"
-            [attr.aria-busy]="submitting()"
-            aria-label="Submit booking request"
-          >
-            @if (submitting()) {
-              Submitting…
-            } @else {
-              Book now
-            }
+          <button type="button" class="bk-btn bk-btn--send" (click)="submit()" [disabled]="submitting() || !canProceed()">
+            {{ submitting() ? 'Sending' : 'Send request' }}
           </button>
         }
       </div>
     }
   </div>
-</section>
+</div>
